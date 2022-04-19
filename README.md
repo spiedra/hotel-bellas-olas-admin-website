@@ -25,7 +25,7 @@ Installation
 1. Clone the repository
 
 ```bash
-git clone https://github.com/spiedra/hotel-bellas-olas-public-website
+git clone https://github.com/spiedra/hotel-bellas-olas-admin-website
 ```
 
 2. Install npm packages
