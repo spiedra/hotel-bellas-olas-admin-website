@@ -1,46 +1,54 @@
 import React from 'react'
 
-import PeopleIcon from '@mui/icons-material/People'
-import PublicIcon from '@mui/icons-material/Public'
-import LightbulbIcon from '@mui/icons-material/Lightbulb'
-import CellTowerIcon from '@mui/icons-material/CellTower'
-import SchoolIcon from '@mui/icons-material/School'
+import HomeIcon from '@mui/icons-material/Home'
+import EditIcon from '@mui/icons-material/Edit'
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered'
+import RoomPreferencesIcon from '@mui/icons-material/RoomPreferences'
+import FactCheckIcon from '@mui/icons-material/FactCheck'
+import EventAvailableIcon from '@mui/icons-material/EventAvailable'
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
 
 export const navbarItems = [
   {
     id: 0,
-    icon: <PeopleIcon />,
-    label: 'Estilo de aprendizaje #1',
-    route: 'learning-style'
+    icon: <HomeIcon />,
+    label: 'Inicio',
+    route: '/'
   },
   {
     id: 1,
-    icon: <PeopleIcon />,
-    label: 'Estilo de aprendizaje #2',
-    route: 'learning-style'
+    icon: <EditIcon />,
+    label: 'Modificar Paginas',
+    route: 'update-pages'
   },
   {
     id: 2,
-    icon: <SchoolIcon />,
-    label: 'Recinto de origen',
-    route: 'student-home-campus'
+    icon: <FormatListNumberedIcon />,
+    label: 'Listado de reservaciones',
+    route: 'reservation-list'
   },
   {
     id: 3,
-    icon: <PublicIcon />,
-    label: 'Genero de estudiante',
-    route: 'student-gender'
+    icon: <RoomPreferencesIcon />,
+    label: 'Administrar habitaciones',
+    route: 'manage-rooms'
   },
   {
     id: 4,
-    icon: <LightbulbIcon />,
-    label: 'Tipo de profesor',
-    route: 'teacher-type'
+    icon: <FactCheckIcon />,
+    label: 'Estado del hotel',
+    route: 'hotel-status'
   },
   {
     id: 5,
-    icon: <CellTowerIcon />,
-    label: 'Clasificación de redes',
-    route: 'network-classification'
+    icon: <EventAvailableIcon />,
+    label: 'Disponibilidad de habitaciones',
+    route: 'room-availability'
+  },
+  {
+    id: 6,
+    icon: <AddPhotoAlternateIcon />,
+    label: 'Publicidad',
+    route: 'advertising'
   }
 ]

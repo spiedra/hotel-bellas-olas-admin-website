@@ -15,7 +15,6 @@ import Typography from '@mui/material/Typography'
 
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
-import HomeIcon from '@mui/icons-material/Home'
 
 import { navbarItems } from './consts/index'
 import { navbarStyles } from './styles'
@@ -42,18 +41,6 @@ const Navbar = () => {
           <CloseIcon />
         </IconButton>
       </Toolbar>
-      <Divider />
-      <List>
-        <ListItem
-          button
-          onClick={() => {
-            navigate('/')
-          }}
-        >
-          <ListItemIcon sx={navbarStyles.icons}>{<HomeIcon />}</ListItemIcon>
-          <ListItemText sx={navbarStyles.text} primary="Inicio" />
-        </ListItem>
-      </List>
       <Divider />
       <List>
         {navbarItems.map((item, index) => (
