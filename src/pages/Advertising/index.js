@@ -1,7 +1,12 @@
+import { Box } from '@mui/material'
 import React from 'react'
 
 const Advertising = () => {
-  return (<h1>This is the module: Advertising</h1>)
+  return (
+    <Box>
+      <h1>Advertising</h1>
+    </Box>
+  )
 }
 
 export default Advertising
