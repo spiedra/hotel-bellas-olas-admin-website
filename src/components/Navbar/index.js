@@ -73,7 +73,7 @@ const Navbar = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Algoritmo de cálculo de distancia de Euclides
+            Hotel Bellas Olas | Administración
           </Typography>
         </Toolbar>
       </AppBar>
