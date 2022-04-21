@@ -1,12 +1,15 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import React, { useEffect, useState } from 'react'
 
+import { Controller, useForm } from 'react-hook-form'
 import { Box, Button, TextField } from '@mui/material'
+
+import { getAdvertisingInfo } from '../../services/Gets/getAdvertisingInfo'
 
 import { advertisingStyles } from './styles'
 
 const Advertising = () => {
+  const [advertisingInfo, setAdvertisingInfo] = useState()
   const {
     control,
     handleSubmit,
@@ -20,9 +23,10 @@ const Advertising = () => {
   })
 
   useEffect(() => {
-
+    // getAdvertisingInfo().then((response) => {
+    //   setAdvertisingInfo(response)
+    // })
   }, [])
-
   const handleCancel = () => {
     console.log('handle cancel')
   }
@@ -35,14 +39,21 @@ const Advertising = () => {
         Publicidad
       </Box>
       <Box sx={advertisingStyles.subContainer}>
-        <div>
+        <Box sx={{ mb: '.5rem' }}>
           <h3>Imagen actual</h3>
-          <Box
-            component="img"
-            sx={advertisingStyles.adImage}
-            src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.jtzLV8nbTiaPVkbonKgPJAHaDk%26pid%3DApi&f=1"
-          ></Box>
-        </div>
+          {advertisingInfo
+            ? (
+            <Box
+              component="img"
+              sx={advertisingStyles.adImage}
+              alt={advertisingInfo.alt}
+              src={`data:image/png;base64,${advertisingInfo.image}`}
+            ></Box>
+              )
+            : (
+            <h5>Cargando</h5>
+              )}
+        </Box>
         <Box
           component="form"
           sx={{
@@ -113,7 +124,6 @@ const Advertising = () => {
             sx={{
               display: 'flex',
               justifyContent: 'flex-end',
-              alignItems: 'center',
               my: '4rem'
             }}
           >

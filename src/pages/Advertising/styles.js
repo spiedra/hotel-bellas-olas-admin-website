@@ -1,6 +1,7 @@
 export const advertisingStyles = {
   mainContainer: {
-    mt: '2rem'
+    mt: '2rem',
+    pb: '2rem'
   },
   subContainer: {
     display: 'flex',
