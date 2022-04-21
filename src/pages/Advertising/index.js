@@ -1,21 +1,21 @@
+/* eslint-disable no-unused-vars */
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import {
-  Box,
-  Button,
-  Input,
-  TextField
-} from '@mui/material'
+import { Box, Button, Input, TextField } from '@mui/material'
 
 import { advertisingStyles } from './styles'
 
 const Advertising = () => {
-  const { control, handleSubmit } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
     defaultValues: {
-      textField: '',
-      description: '',
-      file: ''
+      targetLink: '',
+      imgDescription: '',
+      imgFile: ''
     }
   })
 
@@ -60,30 +60,44 @@ const Advertising = () => {
           >
             <Controller
               control={control}
-              name="textField"
-              render={({ field }) => (
-                <TextField {...field} label="Link de destino" />
+              name="targetLink"
+              rules={{ required: true }}
+              render={({ field: { ref, ...field } }) => (
+                <TextField
+                  {...field}
+                  inputRef={ref}
+                  error={!!errors.targetLink}
+                  label="Link de destino"
+                />
               )}
             />
             <Controller
               control={control}
-              name="description"
-              render={({ field }) => (
-                <TextField {...field} label="Descripción del anuncio" />
+              name="imgDescription"
+              rules={{ required: true }}
+              render={({ field: { ref, ...field } }) => (
+                <TextField
+                  {...field}
+                  inputRef={ref}
+                  error={!!errors.imgDescription}
+                  label="Descripción del anuncio"
+                />
               )}
             />
             <Controller
-              name="file"
+              name="imgFile"
               control={control}
-              render={({ field }) => (
+              rules={{ required: true }}
+              render={({ field: { ref, ...field } }) => (
                 <>
                   <Box component="label" sx={{ mt: '0.5rem' }}>
                     Subir una nueva imagen
                   </Box>
-                  <Input
+                  <TextField
                     sx={{ mt: '0.5rem' }}
                     {...field}
-                    name="file"
+                    inputRef={ref}
+                    error={!!errors.imgFile}
                     type="file"
                   />
                 </>
@@ -106,7 +120,12 @@ const Advertising = () => {
             >
               Aceptar
             </Button>
-            <Button type="button" variant="contained" color="primary" onClick={handleCancel}>
+            <Button
+              type="button"
+              variant="contained"
+              color="primary"
+              onClick={handleCancel}
+            >
               Cancelar
             </Button>
           </Box>
