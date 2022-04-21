@@ -1,6 +1,5 @@
 export const advertisingStyles = {
   mainContainer: {
-    ml: '.8rem',
     mt: '2rem'
   },
   subContainer: {

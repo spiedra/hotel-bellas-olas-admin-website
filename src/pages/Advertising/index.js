@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import { Box, Button, Input, TextField } from '@mui/material'
+import { Box, Button, TextField } from '@mui/material'
 
 import { advertisingStyles } from './styles'
 
@@ -19,6 +19,10 @@ const Advertising = () => {
     }
   })
 
+  useEffect(() => {
+
+  }, [])
+
   const handleCancel = () => {
     console.log('handle cancel')
   }
@@ -27,7 +31,9 @@ const Advertising = () => {
 
   return (
     <Box sx={advertisingStyles.mainContainer}>
-      <h1>Publicidad</h1>
+      <Box component="h1" sx={{ fontSize: { xs: '1.5rem', md: '2rem' } }}>
+        Publicidad
+      </Box>
       <Box sx={advertisingStyles.subContainer}>
         <div>
           <h3>Imagen actual</h3>
@@ -41,8 +47,7 @@ const Advertising = () => {
           component="form"
           sx={{
             height: '10rem',
-            width: '60%',
-            mr: '1rem',
+            width: { xs: '100%', md: '60%' },
             '& .MuiTextField-root': {
               width: '100%',
               my: '.5rem'
