@@ -1,26 +1,29 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { Controller, useForm } from 'react-hook-form'
 
-import { Box, Button, Grid, TextField } from '@mui/material'
+import {
+  Box,
+  Button,
+  Input,
+  TextField
+} from '@mui/material'
 
 import { advertisingStyles } from './styles'
 
 const Advertising = () => {
-  const [inputs, setInputs] = useState()
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      textField: '',
+      description: '',
+      file: ''
+    }
+  })
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-
-    console.log('submint')
+  const handleCancel = () => {
+    console.log('handle cancel')
   }
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-
-    setInputs({
-      ...inputs,
-      [name]: value
-    })
-  }
+  const onSubmit = (values) => alert(JSON.stringify(values))
 
   return (
     <Box sx={advertisingStyles.mainContainer}>
@@ -34,43 +37,77 @@ const Advertising = () => {
             src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.jtzLV8nbTiaPVkbonKgPJAHaDk%26pid%3DApi&f=1"
           ></Box>
         </div>
-        <Box>
+        <Box
+          component="form"
+          sx={{
+            height: '10rem',
+            width: '60%',
+            mr: '1rem',
+            '& .MuiTextField-root': {
+              width: '100%',
+              my: '.5rem'
+            }
+          }}
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <Box
-            component="form"
             sx={{
-              '& .MuiTextField-root': {
-                my: 1,
-                width: { xs: '25ch', sm: '30ch' }
-              }
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              height: '100%'
             }}
-            onSubmit={handleSubmit}
           >
-            <Grid
-              container
-              justifyContent="center"
-              spacing={{ xs: 0.5, sm: 0.5, md: 2 }}
-              columns={{ xs: 4, sm: 8, md: 12 }}
-            >
-              <Grid item>
-                <TextField
-                  sx={advertisingStyles.select}
-                  name=""
-                  label="link"
-                  value="{inputs[item.value]}"
-                  onChange={handleChange}
-                ></TextField>
-              </Grid>
-            </Grid>
+            <Controller
+              control={control}
+              name="textField"
+              render={({ field }) => (
+                <TextField {...field} label="Link de destino" />
+              )}
+            />
+            <Controller
+              control={control}
+              name="description"
+              render={({ field }) => (
+                <TextField {...field} label="Descripción del anuncio" />
+              )}
+            />
+            <Controller
+              name="file"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <Box component="label" sx={{ mt: '0.5rem' }}>
+                    Subir una nueva imagen
+                  </Box>
+                  <Input
+                    sx={{ mt: '0.5rem' }}
+                    {...field}
+                    name="file"
+                    type="file"
+                  />
+                </>
+              )}
+            />
           </Box>
-          <Box>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              my: '4rem'
+            }}
+          >
             <Button
+              sx={{ mr: '1rem' }}
+              type="submit"
               variant="contained"
               color="primary"
-              type="submit"
-              sx={advertisingStyles.button}
-              onClick={handleSubmit}
             >
-              Enviar
+              Aceptar
+            </Button>
+            <Button type="button" variant="contained" color="primary" onClick={handleCancel}>
+              Cancelar
             </Button>
           </Box>
         </Box>

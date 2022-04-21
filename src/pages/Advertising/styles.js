@@ -6,9 +6,10 @@ export const advertisingStyles = {
   subContainer: {
     display: 'flex',
     gap: '40px',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexWrap: 'wrap'
   },
   adImage: {
-    maxWidth: { xs: 175, md: 300 }
+    maxWidth: { xs: 175, md: 400 }
   }
 }
