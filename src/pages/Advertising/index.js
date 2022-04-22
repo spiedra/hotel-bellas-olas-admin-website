@@ -1,37 +1,48 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
 import { Controller, useForm } from 'react-hook-form'
-import { Box, Button, TextField } from '@mui/material'
+import { Box, Button, Input, TextField } from '@mui/material'
 
 import { getAdvertisingInfo } from '../../services/Gets/getAdvertisingInfo'
 
 import { advertisingStyles } from './styles'
+import { editAdvertisingInfo } from '../../services/Puts/editAdvertisingInfo'
 
 const Advertising = () => {
   const [advertisingInfo, setAdvertisingInfo] = useState()
+  const fileInput = useRef()
   const {
     control,
     handleSubmit,
     formState: { errors }
   } = useForm({
     defaultValues: {
-      targetLink: '',
-      imgDescription: '',
-      imgFile: ''
+      AdLink: '',
+      AdInfo: '',
+      Image: ''
     }
   })
 
   useEffect(() => {
-    // getAdvertisingInfo().then((response) => {
-    //   setAdvertisingInfo(response)
-    // })
+    getAdvertisingInfo().then((response) => {
+      setAdvertisingInfo(response)
+    })
   }, [])
+
   const handleCancel = () => {
     console.log('handle cancel')
   }
 
-  const onSubmit = (values) => alert(JSON.stringify(values))
+  const onSubmit = async (values) => {
+    const formData = new FormData()
+    formData.append('AdLink', values.AdLink)
+    formData.append('AdInfo', values.AdInfo)
+    formData.append('Image', fileInput.current.files[0])
+
+    const response = await editAdvertisingInfo(formData)
+    alert(response)
+  }
 
   return (
     <Box sx={advertisingStyles.mainContainer}>
@@ -76,35 +87,35 @@ const Advertising = () => {
           >
             <Controller
               control={control}
-              name="targetLink"
+              name="AdLink"
               rules={{ required: true }}
               render={({ field: { ref, ...field } }) => (
                 <TextField
                   {...field}
                   inputRef={ref}
-                  error={!!errors.targetLink}
+                  error={!!errors.AdLink}
                   label="Link de destino"
                 />
               )}
             />
             <Controller
               control={control}
-              name="imgDescription"
+              name="AdInfo"
               rules={{ required: true }}
               render={({ field: { ref, ...field } }) => (
                 <TextField
                   {...field}
                   inputRef={ref}
-                  error={!!errors.imgDescription}
+                  error={!!errors.AdInfo}
                   label="Descripción del anuncio"
                 />
               )}
             />
             <Controller
-              name="imgFile"
+              name="Image"
               control={control}
               rules={{ required: true }}
-              render={({ field: { ref, ...field } }) => (
+              render={({ field: { ...field } }) => (
                 <>
                   <Box component="label" sx={{ mt: '0.5rem' }}>
                     Subir una nueva imagen
@@ -112,8 +123,8 @@ const Advertising = () => {
                   <TextField
                     sx={{ mt: '0.5rem' }}
                     {...field}
-                    inputRef={ref}
-                    error={!!errors.imgFile}
+                    inputRef={fileInput}
+                    error={!!errors.Image}
                     type="file"
                   />
                 </>
