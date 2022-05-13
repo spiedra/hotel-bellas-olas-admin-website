@@ -16,12 +16,14 @@ import RoomAvailability from './pages/RoomAvailability'
 import UpdatePages from './pages/UpdatePages'
 import App from './App'
 import Home from './pages/Home'
+import AuthState from './components/Authentication/AuthState'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <CssBaseline />
     <ThemeProvider theme={theme}>
+    <AuthState>
       <BrowserRouter>
         <Routes>
               <Route path="/" element={<Login />}/>
@@ -37,6 +39,7 @@ root.render(
               </Route>
         </Routes>
       </BrowserRouter>
+      </AuthState>
     </ThemeProvider>
   </React.StrictMode>
 )

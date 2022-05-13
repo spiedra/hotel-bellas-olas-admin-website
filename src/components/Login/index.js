@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import Dialog from '@mui/material/Dialog'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
@@ -9,12 +9,15 @@ import DialogTitle from '@mui/material/DialogTitle'
 import Box from '@mui/material/Box'
 import { LoginStyles } from './styles'
 import Typography from '@mui/material/Typography'
-import { LoginUser } from '../../services/Posts/verifyAuthUser'
 import { useNavigate } from 'react-router'
+import AuthContext from '../../components/Authentication/AuthContext.js'
 
 export const Login = () => {
   const [userInfo, setUserInfo] = useState({ userName: '', password: '' })
   const [dialogInfo, setDialogInfo] = useState({ open: false, msg: '' })
+  const { loginUser, userAuth } = useContext(AuthContext)
+  const SUCCESSFUL = true
+  const INVALID_USER = false
   const navigate = useNavigate()
   const handleUserInputChange = (event) => {
     setUserInfo({
@@ -23,14 +26,20 @@ export const Login = () => {
     })
   }
 
+  useEffect(() => {
+    if (userAuth === SUCCESSFUL) {
+      navigate('hotel-bellas-olas')
+    }
+    if (userAuth === INVALID_USER) {
+      setDialogInfo({ msg: 'Los datos no coinciden con ningún usuario', open: true })
+    }
+  }, [userAuth])
+
   const handleLogin = () => {
-    LoginUser({ userName: userInfo.userName, password: userInfo.password }).then((response) => {
-      if (response.msg !== undefined) {
-        setDialogInfo({ msg: response.msg, open: true })
-      } else {
-        navigate('hotel-bellas-olas')
-      }
-    })
+    loginUser(userInfo)
+    if (userAuth === INVALID_USER) {
+      setDialogInfo({ msg: 'Los datos no coinciden con ningún usuario', open: true })
+    }
   }
   return (
     <>
