@@ -13,7 +13,7 @@ export const navbarItems = [
     id: 0,
     icon: <HomeIcon />,
     label: 'Inicio',
-    route: '/'
+    route: 'home'
   },
   {
     id: 1,
