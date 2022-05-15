@@ -77,7 +77,10 @@ const Navbar = () => {
           <Typography variant="h6" noWrap component="div">
             Hotel Bellas Olas | Administración
           </Typography>
-          <Button to={'/'} sx={{ flex: '1 1 auto', justifyContent: 'flex-end' }}>
+          <Button
+            to={'/'}
+            sx={{ flex: '1 1 auto', justifyContent: 'flex-end' }}
+          >
             <LogoutIcon sx={{ color: 'white' }} />
           </Button>
         </Toolbar>
