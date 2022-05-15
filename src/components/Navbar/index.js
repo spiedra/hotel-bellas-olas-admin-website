@@ -15,9 +15,11 @@ import Typography from '@mui/material/Typography'
 
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
+import LogoutIcon from '@mui/icons-material/Logout'
 
 import { navbarItems } from './consts/index'
 import { navbarStyles } from './styles'
+import { Button } from '@mui/material'
 
 const drawerWidth = 300
 
@@ -75,6 +77,9 @@ const Navbar = () => {
           <Typography variant="h6" noWrap component="div">
             Hotel Bellas Olas | Administración
           </Typography>
+          <Button to={'/'} sx={{ flex: '1 1 auto', justifyContent: 'flex-end' }}>
+            <LogoutIcon sx={{ color: 'white' }} />
+          </Button>
         </Toolbar>
       </AppBar>
       <Box component="nav" sx={navbarStyles.nav}>
