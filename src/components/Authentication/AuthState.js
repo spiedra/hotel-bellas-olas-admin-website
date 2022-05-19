@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useReducer } from 'react'
 import AuthReducer from './AuthReducer'
 import AuthContext from './AuthContext'
@@ -10,9 +9,15 @@ const AuthState = ({ children }) => {
     errors: null
   }
   const [state, dispatch] = useReducer(AuthReducer, initialState)
+
   const loginUser = async (user) => {
     let action = 1
-    const apiResponse = await Auth.logIn({ userName: user.userName, password: user.password })
+
+    const apiResponse = await Auth.logIn({
+      userName: user.userName,
+      password: user.password
+    })
+
     if (apiResponse.msg !== undefined) {
       action = 2
     }
@@ -22,22 +27,23 @@ const AuthState = ({ children }) => {
   }
 
   const logoutUser = async () => {
+    await Auth.logOut()
     dispatch({
-      type: 3
+      type: 2
     })
   }
 
   return (
-        <AuthContext.Provider
-            value={{
-              userAuth: state.userAuth,
-              errors: state.errors,
-              loginUser,
-              logoutUser
-            }}
-        >
-            {children}
-        </AuthContext.Provider>
+    <AuthContext.Provider
+      value={{
+        userAuth: state.userAuth,
+        errors: state.errors,
+        loginUser,
+        logoutUser
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
   )
 }
 export default AuthState

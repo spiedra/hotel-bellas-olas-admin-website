@@ -28,72 +28,76 @@ export const Login = () => {
 
   useEffect(() => {
     if (userAuth === SUCCESSFUL) {
-      navigate('hotel-bellas-olas')
-    }
-    if (userAuth === INVALID_USER) {
-      setDialogInfo({ msg: 'Los datos no coinciden con ningún usuario', open: true })
+      navigate('admin/home')
     }
   }, [userAuth])
 
   const handleLogin = () => {
     loginUser(userInfo)
     if (userAuth === INVALID_USER) {
-      setDialogInfo({ msg: 'Los datos no coinciden con ningún usuario', open: true })
+      setDialogInfo({
+        msg: 'Los datos no coinciden con ningún usuario',
+        open: true
+      })
     }
   }
   return (
     <>
-          <Typography variant="h3" sx={LoginStyles.LoginTitle}>
-          Administración de Hotel Bellas Olas
-          </Typography>
-          <Box sx={LoginStyles.LoginContainer}>
-          <Box sx={LoginStyles.Login}>
-            <TextField
-              variant="standard"
-              placeholder="Nombre de usuario"
-              margin="normal"
-              name="userName"
-              required
-              onChange={handleUserInputChange}
-              value={userInfo.userName}
-            />
-            <TextField
-              variant="standard"
-              placeholder="Contraseña"
-              margin="normal"
-              required
-              name="password"
-              type="password"
-              onChange={handleUserInputChange}
-              value={userInfo.password}
-            />
-            <Button sx={LoginStyles.Button}
-                variant="contained"
-                color="primary"
-                onClick={handleLogin}
-              >
-                Ingresar
-              </Button>
-            </Box>
-            <Dialog
-            open={dialogInfo.open}
-            onClose={() => setDialogInfo({ open: false })}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
+      <Typography variant="h3" sx={LoginStyles.LoginTitle}>
+        Administración de Hotel Bellas Olas
+      </Typography>
+      <Box sx={LoginStyles.LoginContainer}>
+        <Box sx={LoginStyles.Login}>
+          <TextField
+            variant="standard"
+            placeholder="Nombre de usuario"
+            margin="normal"
+            name="userName"
+            required
+            onChange={handleUserInputChange}
+            value={userInfo.userName}
+          />
+          <TextField
+            variant="standard"
+            placeholder="Contraseña"
+            margin="normal"
+            required
+            name="password"
+            type="password"
+            onChange={handleUserInputChange}
+            value={userInfo.password}
+          />
+          <Button
+            sx={LoginStyles.Button}
+            variant="contained"
+            color="primary"
+            onClick={handleLogin}
           >
-            <DialogTitle id="alert-dialog-title">Iniciar sesión</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                {dialogInfo.msg}
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => setDialogInfo({ open: false })} color="primary">
-                Okay
-              </Button>
-            </DialogActions>
-          </Dialog>
+            Ingresar
+          </Button>
         </Box>
+        <Dialog
+          open={dialogInfo.open}
+          onClose={() => setDialogInfo({ open: false })}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Iniciar sesión</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {dialogInfo.msg}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setDialogInfo({ open: false })}
+              color="primary"
+            >
+              Okay
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
     </>
   )
 }

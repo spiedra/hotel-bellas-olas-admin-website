@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 
 import AppBar from '@mui/material/AppBar'
@@ -15,19 +15,29 @@ import Typography from '@mui/material/Typography'
 
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
+import LogoutIcon from '@mui/icons-material/Logout'
 
 import { navbarItems } from './consts/index'
 import { navbarStyles } from './styles'
+import { Button } from '@mui/material'
+import AuthContext from '../../components/Authentication/AuthContext.js'
 
 const drawerWidth = 300
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate()
+  const { logoutUser, userAuth } = useContext(AuthContext)
 
   const handleDrawerToggle = () => {
     setIsOpen(!isOpen)
   }
+
+  useEffect(() => {
+    if (userAuth === false) {
+      navigate('/')
+    }
+  }, [userAuth])
 
   const drawer = (
     <div>
@@ -75,6 +85,12 @@ const Navbar = () => {
           <Typography variant="h6" noWrap component="div">
             Hotel Bellas Olas | Administración
           </Typography>
+          <Button
+            sx={{ flex: '1 1 auto', justifyContent: 'flex-end' }}
+            onClick={() => logoutUser()}
+          >
+            <LogoutIcon sx={{ color: 'white' }} />
+          </Button>
         </Toolbar>
       </AppBar>
       <Box component="nav" sx={navbarStyles.nav}>
