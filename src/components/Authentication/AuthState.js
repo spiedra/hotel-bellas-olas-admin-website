@@ -27,8 +27,9 @@ const AuthState = ({ children }) => {
   }
 
   const logoutUser = async () => {
+    await Auth.logOut()
     dispatch({
-      type: 3
+      type: 2
     })
   }
 

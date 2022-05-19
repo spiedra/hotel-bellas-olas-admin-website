@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 
 import AppBar from '@mui/material/AppBar'
@@ -26,17 +26,18 @@ const drawerWidth = 300
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const { logoutUser } = useContext(AuthContext)
   const navigate = useNavigate()
+  const { logoutUser, userAuth } = useContext(AuthContext)
 
   const handleDrawerToggle = () => {
     setIsOpen(!isOpen)
   }
 
-  const handleLogOut = () => {
-    logoutUser()
-    navigate('/')
-  }
+  useEffect(() => {
+    if (userAuth === false) {
+      navigate('/')
+    }
+  }, [userAuth])
 
   const drawer = (
     <div>
@@ -85,8 +86,8 @@ const Navbar = () => {
             Hotel Bellas Olas | Administración
           </Typography>
           <Button
-            onClick={handleLogOut}
             sx={{ flex: '1 1 auto', justifyContent: 'flex-end' }}
+            onClick={() => logoutUser()}
           >
             <LogoutIcon sx={{ color: 'white' }} />
           </Button>

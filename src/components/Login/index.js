@@ -30,12 +30,6 @@ export const Login = () => {
     if (userAuth === SUCCESSFUL) {
       navigate('admin/home')
     }
-    if (userAuth === INVALID_USER) {
-      setDialogInfo({
-        msg: 'Los datos no coinciden con ningún usuario',
-        open: true
-      })
-    }
   }, [userAuth])
 
   const handleLogin = () => {
