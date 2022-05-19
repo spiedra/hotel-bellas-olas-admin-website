@@ -9,12 +9,15 @@ const AuthState = ({ children }) => {
     errors: null
   }
   const [state, dispatch] = useReducer(AuthReducer, initialState)
+
   const loginUser = async (user) => {
     let action = 1
+
     const apiResponse = await Auth.logIn({
       userName: user.userName,
       password: user.password
     })
+
     if (apiResponse.msg !== undefined) {
       action = 2
     }

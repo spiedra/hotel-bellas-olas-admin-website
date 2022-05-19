@@ -28,7 +28,7 @@ export const Login = () => {
 
   useEffect(() => {
     if (userAuth === SUCCESSFUL) {
-      navigate('admin')
+      navigate('admin/home')
     }
     if (userAuth === INVALID_USER) {
       setDialogInfo({
