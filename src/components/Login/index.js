@@ -28,7 +28,7 @@ export const Login = () => {
 
   useEffect(() => {
     if (userAuth === SUCCESSFUL) {
-      navigate('hotel-bellas-olas')
+      navigate('admin')
     }
     if (userAuth === INVALID_USER) {
       setDialogInfo({

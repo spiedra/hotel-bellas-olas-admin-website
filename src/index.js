@@ -17,28 +17,34 @@ import UpdatePages from './pages/UpdatePages'
 import App from './App'
 import Home from './pages/Home'
 import AuthState from './components/Authentication/AuthState'
+import ProtectedRoutes from './components/Authentication/ProtectedRoutes'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <CssBaseline />
     <ThemeProvider theme={theme}>
-    <AuthState>
-      <BrowserRouter>
-        <Routes>
-              <Route path="/" element={<Login />}/>
-              <Route path="hotel-bellas-olas" element={<App/>}>
-              <Route path="home" element={<Home/>}/>
-              <Route path="update-pages" element={<UpdatePages />} />
-              <Route path="reservation-list" element={<ReservationList />} />
-              <Route path="manage-rooms" element={<ManageRooms />} />
-              <Route path="hotel-status" element={<HotelStatus />} />
-              <Route path="room-availability" element={<RoomAvailability />} />
-              <Route path="advertising" element={<Advertising />} />
-              <Route path="*" element={<NotFound />} />
+      <AuthState>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route element={<ProtectedRoutes />}>
+              <Route path="admin" element={<App />}>
+                <Route path='home' element={<Home />} />
+                <Route path="update-pages" element={<UpdatePages />} />
+                <Route path="reservation-list" element={<ReservationList />} />
+                <Route path="manage-rooms" element={<ManageRooms />} />
+                <Route path="hotel-status" element={<HotelStatus />} />
+                <Route
+                  path="room-availability"
+                  element={<RoomAvailability />}
+                />
+                <Route path="advertising" element={<Advertising />} />
+                <Route path="*" element={<NotFound />} />
               </Route>
-        </Routes>
-      </BrowserRouter>
+            </Route>
+          </Routes>
+        </BrowserRouter>
       </AuthState>
     </ThemeProvider>
   </React.StrictMode>
