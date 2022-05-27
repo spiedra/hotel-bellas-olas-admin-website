@@ -23,7 +23,6 @@ const HotelStatus = () => {
       format: (value) => value.toLocaleString('en-US')
     }
   ]
-
   useEffect(() => {
     getHotelStatus().then((response) => {
       setRoomList(response)
