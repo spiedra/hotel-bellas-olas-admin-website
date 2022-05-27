@@ -36,7 +36,7 @@ export const navbarItems = [
   {
     id: 4,
     icon: <FactCheckIcon />,
-    label: 'Estado del hotel',
+    label: 'Estado del hotel hoy',
     route: 'hotel-status'
   },
   {
