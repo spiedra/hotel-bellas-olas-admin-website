@@ -18,6 +18,7 @@ import App from './App'
 import Home from './pages/Home'
 import AuthState from './components/Authentication/AuthState'
 import ProtectedRoutes from './components/Authentication/ProtectedRoutes'
+import ManageSeason from './pages/ManageSeason'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -39,6 +40,7 @@ root.render(
                   path="room-availability"
                   element={<RoomAvailability />}
                 />
+                 <Route path="seasons" element={<ManageSeason />} />
                 <Route path="advertising" element={<Advertising />} />
                 <Route path="*" element={<NotFound />} />
               </Route>

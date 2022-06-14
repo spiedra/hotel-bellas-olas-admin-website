@@ -7,8 +7,11 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TablePagination from '@mui/material/TablePagination'
 import TableRow from '@mui/material/TableRow'
+import { Button } from '@mui/material'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
 
-export default function CustomizedTable ({ columns, rows }) {
+export default function CustomizedTable ({ columns, rows, action, onEdit, onDelete }) {
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
@@ -36,12 +39,17 @@ export default function CustomizedTable ({ columns, rows }) {
                   {column.label}
                 </TableCell>
               ))}
+              <TableCell
+                align={'right'}
+                style={{ minWidth: 100 }}
+              >
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
+              .map((row, index) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                     {columns.map((column) => {
@@ -54,6 +62,33 @@ export default function CustomizedTable ({ columns, rows }) {
                         </TableCell>
                       )
                     })}
+                    <TableCell align={'center'}>
+                    {
+                    action
+                      ? (
+                    <>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      style={{ marginRight: '5px', background: '#ffc400' }}
+                      onClick={() => onEdit(rows[index].id)}
+                       >
+                        <EditIcon/>
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      type="submit"
+                      onClick={() => onDelete(rows[index].id)}
+                       >
+                        <DeleteIcon/>
+                    </Button>
+                    </>
+                        )
+                      : <></>
+                    }
+                    </TableCell>
                   </TableRow>
                 )
               })}

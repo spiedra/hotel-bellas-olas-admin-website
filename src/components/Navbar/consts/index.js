@@ -7,6 +7,7 @@ import RoomPreferencesIcon from '@mui/icons-material/RoomPreferences'
 import FactCheckIcon from '@mui/icons-material/FactCheck'
 import EventAvailableIcon from '@mui/icons-material/EventAvailable'
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
+import ThunderstormIcon from '@mui/icons-material/Thunderstorm'
 
 export const navbarItems = [
   {
@@ -47,6 +48,12 @@ export const navbarItems = [
   },
   {
     id: 6,
+    icon: <ThunderstormIcon />,
+    label: 'Administración de temporadas',
+    route: 'seasons'
+  },
+  {
+    id: 7,
     icon: <AddPhotoAlternateIcon />,
     label: 'Publicidad',
     route: 'advertising'
