@@ -12,13 +12,15 @@ import Typography from '@mui/material/Typography'
 import { useNavigate } from 'react-router'
 import AuthContext from '../../components/Authentication/AuthContext.js'
 
+const SUCCESSFUL = true
+const INVALID_USER = false
+
 export const Login = () => {
   const [userInfo, setUserInfo] = useState({ userName: '', password: '' })
   const [dialogInfo, setDialogInfo] = useState({ open: false, msg: '' })
   const { loginUser, userAuth } = useContext(AuthContext)
-  const SUCCESSFUL = true
-  const INVALID_USER = false
   const navigate = useNavigate()
+
   const handleUserInputChange = (event) => {
     setUserInfo({
       ...userInfo,
@@ -41,6 +43,7 @@ export const Login = () => {
       })
     }
   }
+
   return (
     <>
       <Typography variant="h3" sx={LoginStyles.LoginTitle}>
@@ -54,6 +57,7 @@ export const Login = () => {
             margin="normal"
             name="userName"
             required
+            sx={{ width: '100%' }}
             onChange={handleUserInputChange}
             value={userInfo.userName}
           />
@@ -64,6 +68,7 @@ export const Login = () => {
             required
             name="password"
             type="password"
+            sx={{ width: '100%' }}
             onChange={handleUserInputChange}
             value={userInfo.password}
           />
