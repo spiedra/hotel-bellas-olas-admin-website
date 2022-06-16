@@ -14,6 +14,7 @@ import Login from './components/Login'
 import ReservationList from './pages/ReservationList'
 import RoomAvailability from './pages/RoomAvailability'
 import UpdatePages from './pages/UpdatePages'
+import UpdateHome from './pages/UpdateHome'
 import App from './App'
 import Home from './pages/Home'
 import AuthState from './components/Authentication/AuthState'
@@ -36,6 +37,7 @@ root.render(
                 <Route path="reservation-list" element={<ReservationList />} />
                 <Route path="manage-rooms" element={<ManageRooms />} />
                 <Route path="hotel-status" element={<HotelStatus />} />
+                <Route path="update-home" element={<UpdateHome />} />
                 <Route
                   path="room-availability"
                   element={<RoomAvailability />}
