@@ -8,6 +8,7 @@ import { getAdvertisingInfo } from '../../services/Gets/getAdvertisingInfo'
 
 import { advertisingStyles } from './styles'
 import { editAdvertisingInfo } from '../../services/Puts/editAdvertisingInfo'
+import { LoaderSpinner } from '../../components/Loader'
 
 const Advertising = () => {
   const [advertisingInfo, setAdvertisingInfo] = useState()
@@ -45,7 +46,7 @@ const Advertising = () => {
   }
 
   return (
-    <Box sx={advertisingStyles.mainContainer}>
+    <Box sx={{ mt: '3rem', ml: '1.5rem' }}>
       <Box component="h1" sx={{ fontSize: { xs: '1.5rem', md: '2rem' } }}>
         Publicidad
       </Box>
@@ -62,7 +63,7 @@ const Advertising = () => {
             ></Box>
               )
             : (
-            <h5>Cargando</h5>
+            <LoaderSpinner />
               )}
         </Box>
         <Box

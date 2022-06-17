@@ -1,10 +1,12 @@
 import axios from 'axios'
 
-const baseURL = 'https://localhost:7233/API/Season/RegisterSeason'
+const baseURL = 'https://localhost:7233/API/Season/EditSeason'
 
-export const addSeason = (props) => {
+export const editSeason = (props) => {
   return axios
-    .post(baseURL, props)
+    .put(
+      baseURL, props
+    )
     .then((response) => response.data)
     .catch(function (error) {
       if (error.response) {

@@ -20,6 +20,9 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import { navbarItems } from './consts/index'
 import { navbarStyles } from './styles'
 import { Button } from '@mui/material'
+
+import Logo from '../../assets/logo.png'
+
 import AuthContext from '../../components/Authentication/AuthContext.js'
 
 const drawerWidth = 300
@@ -27,9 +30,10 @@ const drawerWidth = 300
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate()
-  const { logoutUser, userAuth } = useContext(AuthContext)
+  const { loginUser, logoutUser, userAuth } = useContext(AuthContext)
 
   const handleDrawerToggle = () => {
+    console.log(loginUser.user)
     setIsOpen(!isOpen)
   }
 
@@ -82,6 +86,14 @@ const Navbar = () => {
           >
             <MenuIcon />
           </IconButton>
+          <Box component="span" sx={{ mr: '.3rem', mt: '.2rem' }}>
+            <img
+              src={Logo}
+              width="64"
+              height="64"
+              alt="Hotel bellas olas logo"
+            />
+          </Box>
           <Typography variant="h6" noWrap component="div">
             Hotel Bellas Olas | Administración
           </Typography>

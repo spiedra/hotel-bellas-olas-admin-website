@@ -51,13 +51,12 @@ const RoomAvailability = () => {
 
   return (
     <>
-      <Box>
+      <Box sx={{ mt: '3rem', ml: '1.5rem' }}>
         <Box component="h1" sx={{ fontSize: { xs: '1.5rem', md: '2rem' } }}>
           Disponibilidad de Habitaciones
         </Box>
         <Box
           component="form"
-          mt="3rem"
           sx={{
             '& .MuiTextField-root': {
               my: 1,
@@ -100,7 +99,7 @@ const RoomAvailability = () => {
                     sx={roomAvailabilityStyles.select}
                     {...field}
                     type="date"
-                    error={!!errors.departureDate}
+                    error={!!errors.DepartureDate}
                     label="Fecha de salida"
                     InputLabelProps={{ shrink: true }}
                   />
