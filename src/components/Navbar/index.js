@@ -30,10 +30,9 @@ const drawerWidth = 300
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate()
-  const { loginUser, logoutUser, userAuth } = useContext(AuthContext)
+  const { logoutUser, userAuth } = useContext(AuthContext)
 
   const handleDrawerToggle = () => {
-    console.log(loginUser.user)
     setIsOpen(!isOpen)
   }
 
