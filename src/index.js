@@ -20,6 +20,7 @@ import Home from './pages/Home'
 import AuthState from './components/Authentication/AuthState'
 import ProtectedRoutes from './components/Authentication/ProtectedRoutes'
 import ManageSeason from './pages/ManageSeason'
+import UpdateFeatures from './pages/UpdateFeatures'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -38,6 +39,7 @@ root.render(
                 <Route path="manage-rooms" element={<ManageRooms />} />
                 <Route path="hotel-status" element={<HotelStatus />} />
                 <Route path="update-home" element={<UpdateHome />} />
+                <Route path="update-features" element={<UpdateFeatures />} />
                 <Route
                   path="room-availability"
                   element={<RoomAvailability />}

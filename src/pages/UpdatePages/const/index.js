@@ -7,8 +7,8 @@ const updateItems = [
   },
   {
     id: 1,
-    title: 'Actualizar página de features pública',
-    description: 'Actualizar características del hotel',
+    title: 'Actualizar página de facilidades pública',
+    description: 'Actualizar facilidades del hotel',
     route: 'update-features'
   }
 ]
