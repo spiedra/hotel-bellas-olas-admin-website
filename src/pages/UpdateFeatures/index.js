@@ -124,8 +124,7 @@ const UpdateFeatures = () => {
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'center',
-              height: '100%'
+              justifyContent: 'center'
             }}
           >
             <Controller
@@ -221,8 +220,7 @@ const UpdateFeatures = () => {
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'center',
-              height: '100%'
+              justifyContent: 'center'
             }}
           >
                  <Controller
@@ -233,12 +231,9 @@ const UpdateFeatures = () => {
               render={({ field: { ref, ...field } }) => (
                 <TextareaAutosize
                   {...field}
-                  fullWidth
-                  minRows={4}
+                  minRows={10}
                   defaultValue={currentEditFeature.feature}
                   inputRef={ref}
-                  error={!!errors.AdLink}
-                  label="Link de destino"
                 />
               )}
             />
