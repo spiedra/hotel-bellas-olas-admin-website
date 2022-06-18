@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-const baseURL = 'https://localhost:7233/API/Room/DeleteRoomTariff/'
+const baseURL = 'https://localhost:7233/API/Room/EditRoomTariffs'
 
-export const DeleteFeature = (id) => {
+export const EditRoomRate = (props) => {
   return axios
-    .delete(
-      baseURL + id
+    .put(
+      baseURL, props
     )
     .then((response) => response.data)
     .catch(function (error) {
