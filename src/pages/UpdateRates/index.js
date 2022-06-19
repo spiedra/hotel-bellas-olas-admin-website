@@ -357,7 +357,7 @@ const UpdateRates = () => {
   }
   return (
     <>
-        <h1>Actualizar tarifas del hotel</h1>
+        <h1>Administrar habitaciones</h1>
         <AddButton onAdd={() => setIsInsertModalOpen(true)}/>
         {
             roomRates

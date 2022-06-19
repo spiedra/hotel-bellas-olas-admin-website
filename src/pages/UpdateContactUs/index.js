@@ -76,11 +76,10 @@ const UpdateContactUs = () => {
                             <TextField
                             {...field}
                             inputRef={ref}
+                            defaultValue={contactUsInfo.name}
                             margin="dense"
                             type="text"
                             fullWidth
-                            defaultValue={contactUsInfo.name}
-                            error={!!errors.HotelName}
                             label="Nombre del hotel"
                             />
                         )}

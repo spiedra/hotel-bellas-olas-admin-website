@@ -18,12 +18,6 @@ const updateItems = [
     route: 'update-about-us'
   },
   {
-    id: 3,
-    title: 'Actualizar página de tarifas',
-    description: 'Actualizar los diferentes servicios a nivel de habitación del hotel',
-    route: 'update-room-rates'
-  },
-  {
     id: 4,
     title: 'Actualizar página de contacto',
     description: 'Actualizar la información de primera mano del hotel',

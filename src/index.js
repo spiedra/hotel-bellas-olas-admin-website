@@ -6,9 +6,8 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { theme } from '../src/styles/theme'
 
-import Advertising from './pages/Advertising'
+import Advertising from './pages/UpdateAdvertising'
 import HotelStatus from './pages/HotelStatus'
-import ManageRooms from './pages/ManageRooms'
 import NotFound from './pages/NotFound'
 import Login from './components/Login'
 import ReservationList from './pages/ReservationList'
@@ -39,12 +38,11 @@ root.render(
                 <Route path='home' element={<Home />} />
                 <Route path="update-pages" element={<UpdatePages />} />
                 <Route path="reservation-list" element={<ReservationList />} />
-                <Route path="manage-rooms" element={<ManageRooms />} />
+                <Route path="manage-rooms" element={<UpdateRates />} />
                 <Route path="hotel-status" element={<HotelStatus />} />
                 <Route path="update-home" element={<UpdateHome />} />
                 <Route path="update-features" element={<UpdateFeatures />} />
                 <Route path="update-about-us" element={<UpdateAboutUs />} />
-                <Route path="update-room-rates" element={<UpdateRates />} />
                 <Route path="update-contact-us" element={<UpdateContactUs />} />
                 <Route
                   path="room-availability"
