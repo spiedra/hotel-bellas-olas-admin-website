@@ -1,12 +1,10 @@
 import axios from 'axios'
 
-const baseURL = 'https://localhost:7233/API/Advertising/EditAdvertising'
+const baseURL = 'https://localhost:7233/API/Room/InsertRoomTariffs'
 
-export const editAdvertisingInfo = (props) => {
+export const addRoomRate = (props) => {
   return axios
-    .put(
-      baseURL, props
-    )
+    .post(baseURL, props)
     .then((response) => response.data)
     .catch(function (error) {
       if (error.response) {
@@ -14,3 +12,5 @@ export const editAdvertisingInfo = (props) => {
       }
     })
 }
+
+export default addRoomRate

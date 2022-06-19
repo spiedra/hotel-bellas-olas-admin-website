@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-const baseURL = 'https://localhost:7233/API/Advertising/EditAdvertising'
+const baseURL = 'https://localhost:7233/API/Hotel/EditHotelContact'
 
-export const editAdvertisingInfo = (props) => {
+export const EditHotelContact = (props) => {
   return axios
     .put(
       baseURL, props

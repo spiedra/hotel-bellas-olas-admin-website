@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-const baseURL = 'https://localhost:7233/API/Advertising/EditAdvertising'
+const baseURL = 'https://localhost:7233/API/Room/EditRoomTariffs'
 
-export const editAdvertisingInfo = (props) => {
+export const EditRoomRate = (props) => {
   return axios
     .put(
       baseURL, props

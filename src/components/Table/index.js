@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import React from 'react'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
@@ -11,7 +13,7 @@ import { Button } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 
-export default function CustomizedTable ({ columns, rows, action, onEdit, onDelete }) {
+export default function CustomizedTable ({ columns, rows, action, onEdit, onDelete, withImage }) {
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
@@ -22,6 +24,16 @@ export default function CustomizedTable ({ columns, rows, action, onEdit, onDele
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value)
     setPage(0)
+  }
+
+  const hasImage = (id, value) => {
+    if (withImage) {
+      if (withImage === id) {
+        return (
+          <img width={100} alt='img' src={value}/>
+        )
+      }
+    }
   }
 
   return (
@@ -56,9 +68,18 @@ export default function CustomizedTable ({ columns, rows, action, onEdit, onDele
                       const value = row[column.id]
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === 'number'
-                            ? column.format(value)
-                            : value}
+                          {
+                          hasImage(column.id, value)
+                          }
+                          {
+                          withImage !== undefined
+                            ? withImage !== column.id
+                              ? column.format && typeof value === 'number'
+                                ? column.format(value)
+                                : <p style={{ maxWidth: column.maxWidth }}>{value}</p>
+                              : <></>
+                            : <>{value}</>
+                          }
                         </TableCell>
                       )
                     })}
