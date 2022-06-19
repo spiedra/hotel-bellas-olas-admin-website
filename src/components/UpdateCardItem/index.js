@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography'
 const UpdateCardItem = (props) => {
   return (
     <Box style={{ marginBottom: '10px', marginTop: '10px' }} sx={{ minWidth: 275 }}>
-        <Card variant="elevation">
+        <Card variant="outlined">
             <Fragment>
                 <CardContent>
                 <Typography variant="h5" component="div">

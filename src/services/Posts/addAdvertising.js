@@ -1,12 +1,10 @@
 import axios from 'axios'
 
-const baseURL = 'https://localhost:7233/API/Advertising/EditAdvertising'
+const baseURL = 'https://localhost:7233/API/Advertising/InsertAdvertising'
 
-export const editAdvertisingInfo = (props) => {
+export const addAdvertising = (props) => {
   return axios
-    .put(
-      baseURL, props
-    )
+    .post(baseURL, props)
     .then((response) => response.data)
     .catch(function (error) {
       if (error.response) {

@@ -10,6 +10,6 @@ export const advertisingStyles = {
     flexWrap: 'wrap'
   },
   adImage: {
-    maxWidth: { xs: 175, md: 400 }
+    maxWidth: { xs: 175, md: 200 }
   }
 }

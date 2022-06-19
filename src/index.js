@@ -23,6 +23,7 @@ import ManageSeason from './pages/ManageSeason'
 import UpdateFeatures from './pages/UpdateFeatures'
 import UpdateAboutUs from './pages/UpdateAboutUs'
 import UpdateRates from './pages/UpdateRates'
+import UpdateContactUs from './pages/UpdateContactUs'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -44,6 +45,7 @@ root.render(
                 <Route path="update-features" element={<UpdateFeatures />} />
                 <Route path="update-about-us" element={<UpdateAboutUs />} />
                 <Route path="update-room-rates" element={<UpdateRates />} />
+                <Route path="update-contact-us" element={<UpdateContactUs />} />
                 <Route
                   path="room-availability"
                   element={<RoomAvailability />}
