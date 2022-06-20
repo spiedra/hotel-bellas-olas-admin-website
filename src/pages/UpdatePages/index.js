@@ -1,11 +1,28 @@
-import { Box } from '@mui/material'
+// import { Box } from '@mui/material'
 import React from 'react'
+import updateItems from './const/index'
+import UpdateCardItem from '../../components/UpdateCardItem'
+import { useNavigate } from 'react-router'
 
 const UpdatePages = () => {
+  const navigate = useNavigate()
+
+  const onNavigateModule = (route) => {
+    navigate(`/admin/${route}`)
+  }
+
   return (
-    <Box sx={{ mt: '3rem', ml: '1.5rem' }}>
-      <h1>This is the module: UpdatePages</h1>
-    </Box>
+  <>
+   {updateItems.map(item => {
+     return (
+     <UpdateCardItem
+     title={item.title}
+     description={item.description}
+     onClick={() => onNavigateModule(item.route)}
+     key={item.id}/>
+     )
+   })}
+  </>
   )
 }
 

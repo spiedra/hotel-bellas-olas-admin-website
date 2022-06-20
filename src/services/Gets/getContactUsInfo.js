@@ -1,12 +1,10 @@
 import axios from 'axios'
 
-const baseURL = 'https://localhost:7233/API/Advertising/EditAdvertising'
+const baseURL = 'https://localhost:7233/API/Hotel/GetHotelContact'
 
-export const editAdvertisingInfo = (props) => {
+export const getContactUsInfo = () => {
   return axios
-    .put(
-      baseURL, props
-    )
+    .get(baseURL)
     .then((response) => response.data)
     .catch(function (error) {
       if (error.response) {

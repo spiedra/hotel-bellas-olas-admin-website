@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-const baseURL = 'https://localhost:7233/API/Advertising/EditAdvertising'
+const baseURL = 'https://localhost:7233/API/Hotel/DeleteAboutUsImageGallery/'
 
-export const editAdvertisingInfo = (props) => {
+export const DeleteImageGallery = (id) => {
   return axios
-    .put(
-      baseURL, props
+    .delete(
+      baseURL + id
     )
     .then((response) => response.data)
     .catch(function (error) {

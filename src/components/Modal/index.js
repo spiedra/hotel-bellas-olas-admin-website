@@ -5,6 +5,8 @@ import Dialog from '@mui/material/Dialog'
 import { Button, DialogActions } from '@mui/material'
 
 const Modal = (props) => {
+  // const theme = useTheme()
+  // const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
   return (
     <Dialog
       open={props.isOpen}

@@ -1,7 +1,7 @@
-export const advertisingStyles = {
+const updateStyles = {
   mainContainer: {
-    mt: '2rem',
-    pb: '2rem'
+    pb: '2rem',
+    height: 'max-content'
   },
   subContainer: {
     display: 'flex',
@@ -9,7 +9,8 @@ export const advertisingStyles = {
     alignItems: 'center',
     flexWrap: 'wrap'
   },
-  adImage: {
-    maxWidth: { xs: 175, md: 400 }
+  img: {
+    maxWidth: { xs: 175, md: 200 }
   }
 }
+export default updateStyles
