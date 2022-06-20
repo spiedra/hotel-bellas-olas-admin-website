@@ -1,20 +1,21 @@
-/* eslint-disable no-unused-vars */
-
 import React, { useEffect, useState, useRef } from 'react'
+
 import CustomizedTable from '../../components/Table'
+
 import { useForm, Controller } from 'react-hook-form'
-import { Button, Box, TextareaAutosize, TextField } from '@mui/material'
+import { Box, TextField, Grid } from '@mui/material'
+
 import Modal from '../../components/Modal'
 import AddButton from '../../components/AddButton'
-import { getFeatures } from '../../services/Gets/getFeatures'
-import { DeleteFeature } from '../../services/Deletes/deleteFeature'
 import { LoaderSpinner } from '../../components/Loader'
-import updateStyles from './styles'
+
+import { getFeatures } from '../../services/Gets/getFeatures'
+import { deleteFeature } from '../../services/Deletes/deleteFeature'
 import { editFeature } from '../../services/Puts/editFeature'
 import { addFeature } from '../../services/Posts/addFeature'
 
 const columns = [
-  { id: 'id', label: 'ID', minWidth: 170 },
+  { id: 'id', label: 'ID', minWidth: 10 },
   { id: 'feature', label: 'Facilidad', maxWidth: 400 },
   {
     id: 'img',
@@ -27,72 +28,80 @@ const columns = [
 
 const UpdateFeatures = () => {
   const [features, setFeatures] = useState()
-  const [currentEditFeature, setCurrentEditFeature] = useState({ id: '', feature: '' })
-  const [currentDeleteFeature, setCurrentDeleteFeature] = useState()
-  const [isInsertModalOpen, setIsInsertModalOpen] = useState(false)
+  const [currentFeature, setCurrentFeature] = useState()
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [stateModal, setStateModal] = useState({ msg: '', isOpen: false })
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const fileInput = useRef()
 
   const getAllFeatures = () => {
-    getFeatures().then(response => {
+    getFeatures().then((response) => {
       setFeatures(response)
+      console.log(response)
     })
   }
 
   const {
     control,
     handleSubmit,
-    formState: { errors }
-  } = useForm({
-    defaultValues: {
-      FeatureDescription: '',
-      FeatureImage: ''
-    }
-  })
+    formState: { errors },
+    reset
+  } = useForm()
+
+  useEffect(() => {
+    reset()
+  }, [isEditModalOpen, isAddModalOpen])
 
   const onAdd = (values) => {
-    if (fileInput.current.files[0]) {
-      const formData = new FormData()
-      formData.append('featureDescription', values.FeatureDescription)
-      formData.append('featureImage', fileInput.current.files[0])
-      addFeature(formData).then(response => {
-        setStateModal({ msg: response, isOpen: true })
-        getAllFeatures()
-      })
-      setIsInsertModalOpen(false)
-    } else {
-      setStateModal({ msg: 'Debe ingresar una imagen primero', isOpen: true })
-    }
+    const formData = new FormData()
+    formData.append('featureDescription', values.FeatureDescription)
+    formData.append('featureImage', fileInput.current.files[0])
+
+    addFeature(formData).then((response) => {
+      setIsAddModalOpen(false)
+      setStateModal({ msg: response, isOpen: true })
+      getAllFeatures()
+    })
   }
 
   const setEditValue = (featureId) => {
+    setCurrentFeature(
+      features.find((f) => {
+        return f.id === featureId
+      })
+    )
     setIsEditModalOpen(true)
-    setCurrentEditFeature(features.filter((f) => { return f.id === featureId })[0])
   }
 
-  const onSaveChanges = async (values) => {
+  const onEdit = async (values) => {
     const formData = new FormData()
-    formData.append('featureId', currentEditFeature.id)
+    formData.append('featureId', currentFeature.id)
     formData.append('featureDescription', values.FeatureDescription)
+
     if (fileInput.current.files[0]) {
       formData.append('featureImage', fileInput.current.files[0])
     }
+
     const response = await editFeature(formData)
     setStateModal({ isOpen: true, msg: response })
     setIsEditModalOpen(false)
     getAllFeatures()
   }
 
-  const onConfirmDelete = async (featureId) => {
-    setIsConfirmModalOpen(true)
-    setCurrentDeleteFeature(featureId)
+  const setDeleteValue = async (featureId) => {
+    setCurrentFeature(
+      features.find((feature) => {
+        return feature.id === featureId
+      })
+    )
+    console.log(currentFeature)
+    setIsDeleteModalOpen(true)
   }
 
   const onDelete = async () => {
-    const response = await DeleteFeature(currentDeleteFeature)
-    setIsConfirmModalOpen(false)
+    const response = await deleteFeature(currentFeature.id)
+    setIsDeleteModalOpen(false)
     setStateModal({ msg: response, isOpen: true })
     getAllFeatures()
   }
@@ -101,233 +110,204 @@ const UpdateFeatures = () => {
     getAllFeatures()
   }, [])
 
-  const ModalInsertBody = () => {
-    return (
-        <Box sx={updateStyles.mainContainer}>
-      <Box component="h1" sx={{ fontSize: { xs: '1.5rem', md: '2rem' } }}>
-        Insertar facilidad
-      </Box>
-      <Box sx={updateStyles.subContainer}>
-        <Box
-          component="form"
-          sx={{
-            height: '10rem',
-            width: { xs: '100%', md: '60%' },
-            '& .MuiTextField-root': {
-              width: '100%',
-              my: '.5rem'
-            }
-          }}
-          onSubmit={handleSubmit(onAdd)}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center'
-            }}
-          >
-            <Controller
-              control={control}
-              name="FeatureDescription"
-              rules={{ required: true }}
-              render={({ field: { ref, ...field } }) => (
-                <TextField
-                 fullWidth
-                  {...field}
-                  inputRef={ref}
-                  error={!!errors.FeatureDescription}
-                  label="Facilidad"
-                />
-              )}
+  const addModalBody = (
+    <Box
+      component="form"
+      id="add_form"
+      sx={{
+        '& .MuiTextField-root': {
+          width: '100%',
+          my: '.5rem'
+        }
+      }}
+      onSubmit={handleSubmit(onAdd)}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center'
+        }}
+      >
+        <Controller
+          control={control}
+          name="FeatureDescription"
+          rules={{ required: true }}
+          render={({ field: { ref, ...field } }) => (
+            <TextField
+              {...field}
+              inputRef={ref}
+              autoFocus
+              margin="dense"
+              type="text"
+              fullWidth
+              variant="standard"
+              error={!!errors.FeatureDescription}
+              label="Facilidad"
             />
-                <>
-                  <Box component="label" sx={{ mt: '0.5rem' }}>
-                    Subir una imagen
-                  </Box>
-                  <TextField
-                    fullWidth
-                    sx={{ mt: '0.5rem' }}
-                    inputRef={fileInput}
-                    type="file"
-                  />
-                </>
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              my: '4rem'
-            }}
-          >
-            <Button
-              sx={{ mr: '1rem' }}
-              type="submit"
-              variant="contained"
-              color="primary"
-            >
-              Aceptar
-            </Button>
-            <Button
-              type="button"
-              variant="contained"
-              color="primary"
-              onClick={() => setIsInsertModalOpen(false)}
-            >
-              Cancelar
-            </Button>
-          </Box>
-        </Box>
+          )}
+        />
+        <Controller
+          control={control}
+          name="FeatureImage"
+          rules={{ required: true }}
+          render={({ field: { ...field } }) => (
+            <TextField
+              {...field}
+              inputRef={fileInput}
+              error={!!errors.FeatureImage}
+              type="file"
+            />
+          )}
+        />
       </Box>
     </Box>
-    )
-  }
+  )
 
-  const ModalEditBody = () => {
-    return (
+  const editModalBody = (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: { sm: 'flex-start', md: 'space-around' }
+      }}
+    >
+      {currentFeature
+        ? (
         <>
-        <Box sx={updateStyles.subContainer}>
-        <Box sx={{ mb: '.5rem' }}>
-          <h3>Imagen actual</h3>
-          {currentEditFeature
-            ? (
+          <Box>
+            <h3>Imagen actual</h3>
             <Box
               component="img"
-              style={{ width: '300px' }}
-              sx={updateStyles.Image}
+              sx={{ maxWidth: { xs: 175, md: 400 } }}
               alt={'facilidad-img'}
-              src={currentEditFeature.img}
+              src={currentFeature.img}
             ></Box>
-              )
-            : (
-            <h5>Cargando</h5>
-              )}
-        </Box>
-        <Box
-          noValidate
-          component="form"
-          sx={{
-            height: '10rem',
-            width: { xs: '100%', md: '60%' },
-            '& .MuiTextField-root': {
-              width: '100%',
-              my: '.5rem'
-            }
-          }}
-          onSubmit={handleSubmit(onSaveChanges)}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center'
-            }}
-          >
-                 <Controller
-              control={control}
-              name="FeatureDescription"
-              rules={{ required: true }}
-              defaultValue={currentEditFeature.feature}
-              render={({ field: { ref, ...field } }) => (
-                <TextareaAutosize
-                  {...field}
-                  minRows={10}
-                  defaultValue={currentEditFeature.feature}
-                  inputRef={ref}
-                />
-              )}
-            />
-                <>
-                  <Box component="label" sx={{ mt: '0.5rem' }}>
-                    Subir una imagen
-                  </Box>
-                  <TextField
-                    fullWidth
-                    inputRef={fileInput}
-                    sx={{ maxWidth: { xs: '100%', md: '55%' }, mt: '0.5rem' }}
-                    type="file"
-                  />
-                </>
           </Box>
           <Box
+            component="form"
+            id="edit_form"
             sx={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              my: '4rem'
+              pt: { xs: 0, md: '3.7rem' },
+              '& .MuiTextField-root': {
+                my: 1,
+                width: { xs: '37ch', md: '75ch' }
+              }
             }}
+            autoComplete="off"
+            onSubmit={handleSubmit(onEdit)}
           >
-            <Button
-              sx={{ mr: '1rem' }}
-              type="submit"
-              variant="contained"
-              color="primary"
+            <Grid
+              container
+              justifyContent="flex-start"
+              flexDirection="column"
+              spacing={{ xs: 0.5, sm: 0.5, md: 2 }}
+              columns={{ xs: 4, sm: 8, md: 12 }}
             >
-              Guardar
-            </Button>
+              <Grid item>
+                <Controller
+                  control={control}
+                  name="FeatureDescription"
+                  rules={{ required: true, min: 1 }}
+                  defaultValue={currentFeature.feature}
+                  render={({ field: { ...field } }) => (
+                    <TextField
+                      {...field}
+                      type="text"
+                      error={!!errors.FeatureDescription}
+                      label="Facilidad"
+                      defaultValue={currentFeature.feature}
+                      multiline
+                      rows={4}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item>
+                <Controller
+                  control={control}
+                  name="FeatureImage"
+                  render={({ field: { ...field } }) => (
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <Box component="label" sx={{ mt: '0.5rem' }}>
+                        Subir una nueva imagen
+                      </Box>
+                      <TextField
+                        {...field}
+                        inputRef={fileInput}
+                        error={!!errors.FeatureImage}
+                        type="file"
+                      />
+                    </Box>
+                  )}
+                />
+              </Grid>
+            </Grid>
           </Box>
-        </Box>
-      </Box>
         </>
-    )
-  }
+          )
+        : (
+        <LoaderSpinner />
+          )}
+    </Box>
+  )
+
   return (
     <>
-        <h1>Actualizar facilidades</h1>
-        <AddButton onAdd={() => setIsInsertModalOpen(true)}/>
-        {
-            features
-              ? <CustomizedTable action={true} onEdit={setEditValue} withImage={'img'} onDelete={(onConfirmDelete)} columns={columns} rows={features || []} />
-              : <LoaderSpinner/>
-        }
-        <Modal
-                isOpen ={isInsertModalOpen}
-                onClose={() => setIsInsertModalOpen(false)}
-                title={'Insertar facilidad'}
-                modalBody={<ModalInsertBody/>}
-        />
-        <Modal
-            isOpen ={stateModal.isOpen}
-            onClose={() => setStateModal({ isOpen: false })}
-            title={'Mensaje del sistema'}
-            modalBody={stateModal.msg}
-        />
-        <Modal
-            isOpen ={isConfirmModalOpen}
-            onClose={() => setIsConfirmModalOpen(false)}
-            title={'¿Está seguro que desea eliminar?'}
-            modalBody={
-                <>Se eliminará la facilidad #{currentDeleteFeature}</>
-            }
-            modalActions={
-                <>
-                    <Button
-                        sx={{ mr: '1rem' }}
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        style={{ marginBottom: '50px' }}
-                        onClick={onDelete}
-                        >
-                        Aceptar
-                    </Button>
-                    <Button
-                        type="button"
-                        variant="contained"
-                        color="primary"
-                        onClick={() => setIsConfirmModalOpen(false)}
-                        style={{ marginBottom: '50px' }}
-                        >
-                        Cancelar
-                    </Button>
-                </>
-            }
-        />
-        <Modal
-            isOpen ={isEditModalOpen}
-            onClose={() => setIsEditModalOpen(false)}
-            title={'Modificar facilidad'}
-            modalBody={<ModalEditBody/>}
-        />
+      <Box
+        component="h1"
+        sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, mb: '.8rem' }}
+      >
+        Administración | Pagina de Facilidades
+      </Box>
+      {features
+        ? (
+        <>
+          <AddButton onAdd={() => setIsAddModalOpen(true)} />
+          <CustomizedTable
+            action={true}
+            onEdit={setEditValue}
+            withImage={'img'}
+            onDelete={setDeleteValue}
+            columns={columns}
+            rows={features || []}
+          />
+        </>
+          )
+        : (
+        <LoaderSpinner />
+          )}
+      <Modal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        title={'Insertar facilidad'}
+        idForm="add_form"
+        content={addModalBody}
+      />
+      <Modal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        maxWidth="lg"
+        title={'Modificar facilidad'}
+        idForm="edit_form"
+        content={editModalBody}
+      />
+      <Modal
+        isOpen={stateModal.isOpen}
+        onClose={() => setStateModal({ isOpen: false })}
+        onSubmit={() => setStateModal({ isOpen: false })}
+        title={'Mensaje del sistema'}
+        content={stateModal.msg}
+      />
+
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        title={'Eliminar Temporada'}
+        onSubmit={onDelete}
+        content="¿Está seguro de eliminar esta temporada?"
+      />
     </>
   )
 }

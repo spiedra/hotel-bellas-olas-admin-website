@@ -114,7 +114,7 @@ const UpdateAboutUs = () => {
               ></Box>
                 )
               : (
-              <h5>Cargando</h5>
+              <LoaderSpinner/>
                 )}
           </Box>
           <Box

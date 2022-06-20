@@ -226,8 +226,13 @@ const ManageSeason = () => {
   )
 
   return (
-    <Box sx={{ mt: '3rem', ml: '1.5rem' }}>
-      <h1>Administración de temporadas</h1>
+    <Box>
+      <Box
+        component="h1"
+        sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, mb: '.8rem' }}
+      >
+        Administración de Temporadas
+      </Box>
       {seasons
         ? (
         <>
@@ -266,7 +271,7 @@ const ManageSeason = () => {
         onClose={() => setIsDeleteModalOpen(false)}
         title={'Eliminar Temporada'}
         onSubmit={onDelete}
-        content="¿Está seguro de eliminar esta temporada?"
+        content="¿Está seguro de eliminar esta facilidad?"
       />
 
       <Modal

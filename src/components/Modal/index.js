@@ -5,14 +5,12 @@ import Dialog from '@mui/material/Dialog'
 import { Button, DialogActions } from '@mui/material'
 
 const Modal = (props) => {
-  // const theme = useTheme()
-  // const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
   return (
     <Dialog
       open={props.isOpen}
       onClose={props.onClose}
       fullWidth={true}
-      maxWidth="sm"
+      maxWidth={props.maxWidth || 'sm'}
     >
       <DialogTitle>{props.title}</DialogTitle>
       <DialogContent>{props.content}</DialogContent>
