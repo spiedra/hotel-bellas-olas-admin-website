@@ -9,6 +9,19 @@ import { getAdvertisingInfo } from '../../services/Gets/getAdvertisingInfo'
 import { advertisingStyles } from './styles'
 import { editAdvertisingInfo } from '../../services/Puts/editAdvertisingInfo'
 import { LoaderSpinner } from '../../components/Loader'
+import CustomizedTable from '../../components/Table'
+
+const columns = [
+  { id: 'id', label: 'ID', minWidth: 170 },
+  { id: 'adInfo', label: 'Tipo', minWidth: 100 },
+  {
+    id: 'adLink',
+    label: 'Porcentaje',
+    maxWidth: '40',
+    align: 'right',
+    format: (value) => value.toLocaleString('en-US')
+  }
+]
 
 const Advertising = () => {
   const [advertisingInfo, setAdvertisingInfo] = useState()
@@ -27,9 +40,18 @@ const Advertising = () => {
 
   useEffect(() => {
     getAdvertisingInfo().then((response) => {
+      console.log(response)
       setAdvertisingInfo(response)
     })
   }, [])
+
+  const setEditValue = (currentRowId) => {
+
+  }
+
+  const setDeleteValue = (currentRowId) => {
+
+  }
 
   const handleCancel = () => {
     console.log('handle cancel')
@@ -47,26 +69,30 @@ const Advertising = () => {
 
   return (
     <Box sx={{ mt: '3rem', ml: '1.5rem' }}>
-      <Box component="h1" sx={{ fontSize: { xs: '1.5rem', md: '2rem' } }}>
-        Publicidad
-      </Box>
-      <Box sx={advertisingStyles.subContainer}>
-        <Box sx={{ mb: '.5rem' }}>
-          <h3>Imagen actual</h3>
+      <h1>Administración de publicidad</h1>
           {advertisingInfo
             ? (
-            <Box
-              component="img"
-              sx={advertisingStyles.adImage}
-              alt={advertisingInfo.alt}
-              src={`data:image/png;base64,${advertisingInfo.image}`}
-            ></Box>
+
+                // <Box
+                //   key={index}
+                //   component="img"
+                //   sx={advertisingStyles.adImage}
+                //   alt={item.adInfo}
+                //   src={`data:image/png;base64,${item.imageBase64}`}
+                // ></Box>
+                <CustomizedTable
+                action={true}
+                onEdit={setEditValue}
+                onDelete={setDeleteValue}
+                columns={columns}
+                rows={advertisingInfo || []}
+              />
               )
+
             : (
             <LoaderSpinner />
               )}
-        </Box>
-        <Box
+        {/* <Box
           component="form"
           sx={{
             height: '10rem',
@@ -156,9 +182,8 @@ const Advertising = () => {
               Cancelar
             </Button>
           </Box>
-        </Box>
+        </Box> */}
       </Box>
-    </Box>
   )
 }
 

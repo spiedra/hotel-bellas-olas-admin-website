@@ -26,18 +26,19 @@ import Logo from '../../assets/logo.png'
 import AuthContext from '../../components/Authentication/AuthContext.js'
 
 const drawerWidth = 300
+const LOG_OUT = -1
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate()
-  const { logoutUser, userAuth } = useContext(AuthContext)
+  const { userName, logoutUser, userAuth } = useContext(AuthContext)
 
   const handleDrawerToggle = () => {
     setIsOpen(!isOpen)
   }
 
   useEffect(() => {
-    if (userAuth === false) {
+    if (userAuth === LOG_OUT) {
       navigate('/')
     }
   }, [userAuth])
@@ -96,12 +97,21 @@ const Navbar = () => {
           <Typography variant="h6" noWrap component="div">
             Hotel Bellas Olas | Administración
           </Typography>
-          <Button
-            sx={{ flex: '1 1 auto', justifyContent: 'flex-end' }}
-            onClick={() => logoutUser()}
+          <Box
+            sx={{
+              display: 'flex',
+              flex: '1 1 auto',
+              alignItems: 'center',
+              justifyContent: 'flex-end'
+            }}
           >
-            <LogoutIcon sx={{ color: 'white' }} />
-          </Button>
+            <Typography variant="h7" noWrap component="div">
+              Usuario: {userName}
+            </Typography>
+            <Button onClick={() => logoutUser()}>
+              <LogoutIcon sx={{ color: 'white' }} />
+            </Button>
+          </Box>
         </Toolbar>
       </AppBar>
       <Box component="nav" sx={navbarStyles.nav}>
