@@ -25,6 +25,7 @@ import Login from './components/Login'
 import AuthState from './components/Authentication/AuthState'
 import ProtectedRoutes from './components/Authentication/ProtectedRoutes'
 import ManageRooms from './pages/ManageRooms'
+import ManageGallery from './pages/ManageGallery'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -46,6 +47,7 @@ root.render(
                 <Route path="update-features" element={<UpdateFeatures />} />
                 <Route path="update-about-us" element={<UpdateAboutUs />} />
                 <Route path="update-contact-us" element={<UpdateContactUs />} />
+                <Route path="manage-gallery" element={<ManageGallery />} />
                 <Route
                   path="room-availability"
                   element={<RoomAvailability />}
