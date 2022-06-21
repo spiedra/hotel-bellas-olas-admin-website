@@ -104,7 +104,12 @@ const UpdateFeatures = () => {
   }
 
   const addModalBody = (
-    <Box component="form" id="add_form" onSubmit={handleSubmit(onAdd)}>
+    <Box
+      component="form"
+      id="add_form"
+      autoComplete="off"
+      onSubmit={handleSubmit(onAdd)}
+    >
       <Grid
         container
         justifyContent="flex-start"
@@ -138,17 +143,17 @@ const UpdateFeatures = () => {
             name="FeatureImage"
             rules={{ required: true }}
             render={({ field: { ...field } }) => (
-              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                <Box component="label" sx={{ my: '0.5rem' }}>
-                  Subir una nueva imagen
-                </Box>
-                <TextField
-                  {...field}
-                  inputRef={fileInput}
-                  error={!!errors.FeatureImage}
-                  type="file"
-                />
-              </Box>
+              <TextField
+                {...field}
+                inputRef={fileInput}
+                InputLabelProps={{ shrink: true }}
+                autoFocus
+                margin="dense"
+                type="file"
+                fullWidth
+                error={!!errors.FeatureImage}
+                label="Subir una nueva imagen"
+              />
             )}
           />
         </Grid>
@@ -221,17 +226,17 @@ const UpdateFeatures = () => {
                   control={control}
                   name="FeatureImage"
                   render={({ field: { ...field } }) => (
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                      <Box component="label" sx={{ mt: '0.5rem' }}>
-                        Subir una nueva imagen
-                      </Box>
-                      <TextField
-                        {...field}
-                        inputRef={fileInput}
-                        error={!!errors.FeatureImage}
-                        type="file"
-                      />
-                    </Box>
+                    <TextField
+                      {...field}
+                      inputRef={fileInput}
+                      InputLabelProps={{ shrink: true }}
+                      autoFocus
+                      margin="dense"
+                      type="file"
+                      fullWidth
+                      error={!!errors.FeatureImage}
+                      label="Subir una nueva imagen"
+                    />
                   )}
                 />
               </Grid>
@@ -273,7 +278,7 @@ const UpdateFeatures = () => {
       <Modal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        title={'Insertar facilidad'}
+        title={'Insertar Facilidad'}
         idForm="add_form"
         content={addModalBody}
       />
@@ -281,7 +286,7 @@ const UpdateFeatures = () => {
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         maxWidth="lg"
-        title={'Modificar facilidad'}
+        title={'Modificar Facilidad'}
         idForm="edit_form"
         content={editModalBody}
       />
@@ -292,7 +297,6 @@ const UpdateFeatures = () => {
         title={'Mensaje del sistema'}
         content={stateModal.msg}
       />
-
       <Modal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}

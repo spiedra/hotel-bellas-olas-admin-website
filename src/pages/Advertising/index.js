@@ -164,20 +164,20 @@ const Advertising = () => {
         <Grid item>
           <Controller
             control={control}
-            name="Image"
+            name="image"
             rules={{ required: true }}
             render={({ field: { ...field } }) => (
-              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                <Box component="label" sx={{ my: '0.5rem' }}>
-                  Subir una nueva imagen
-                </Box>
-                <TextField
-                  {...field}
-                  inputRef={fileInput}
-                  error={!!errors.Image}
-                  type="file"
-                />
-              </Box>
+              <TextField
+                {...field}
+                inputRef={fileInput}
+                InputLabelProps={{ shrink: true }}
+                autoFocus
+                margin="dense"
+                fullWidth
+                type="file"
+                error={!!errors.image}
+                label="Subir una nueva imagen"
+              />
             )}
           />
         </Grid>
@@ -237,6 +237,8 @@ const Advertising = () => {
                       {...field}
                       type="text"
                       error={!!errors.AdLink}
+                      margin="dense"
+                      fullWidth
                       label="URL"
                       defaultValue={currentAdvertising.adLink}
                     />
@@ -254,6 +256,8 @@ const Advertising = () => {
                       {...field}
                       type="text"
                       error={!!errors.AdInfo}
+                      margin="dense"
+                      fullWidth
                       label="Información"
                       defaultValue={currentAdvertising.info}
                     />
@@ -265,17 +269,17 @@ const Advertising = () => {
                   control={control}
                   name="image"
                   render={({ field: { ...field } }) => (
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                      <Box component="label" sx={{ mt: '0.5rem' }}>
-                        Subir una nueva imagen
-                      </Box>
-                      <TextField
-                        {...field}
-                        inputRef={fileInput}
-                        error={!!errors.image}
-                        type="file"
-                      />
-                    </Box>
+                    <TextField
+                      {...field}
+                      inputRef={fileInput}
+                      InputLabelProps={{ shrink: true }}
+                      autoFocus
+                      margin="dense"
+                      fullWidth
+                      type="file"
+                      error={!!errors.image}
+                      label="Subir una nueva imagen"
+                    />
                   )}
                 />
               </Grid>

@@ -124,17 +124,17 @@ const UpdateHome = () => {
                   control={control}
                   name="image"
                   render={({ field: { ...field } }) => (
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                      <Box component="label" sx={{ mt: '0.5rem' }}>
-                        Subir una nueva imagen
-                      </Box>
-                      <TextField
-                        {...field}
-                        inputRef={fileInput}
-                        error={!!errors.image}
-                        type="file"
-                      />
-                    </Box>
+                    <TextField
+                    {...field}
+                    inputRef={fileInput}
+                    InputLabelProps={{ shrink: true }}
+                    autoFocus
+                    margin="dense"
+                    type="file"
+                    fullWidth
+                    error={!!errors.image}
+                    label="Subir una nueva imagen"
+                  />
                   )}
                 />
               </Grid>

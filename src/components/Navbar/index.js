@@ -45,7 +45,7 @@ const Navbar = () => {
 
   const drawer = (
     <div>
-      <Toolbar sx={navbarStyles.toolbarClose}>
+      <Toolbar sx={{ justifyContent: 'flex-end' }}>
         <IconButton
           color="inherit"
           aria-label="open drawer"
@@ -75,7 +75,7 @@ const Navbar = () => {
 
   return (
     <>
-      <AppBar position="fixed" sx={navbarStyles.appBar}>
+      <AppBar position="fixed" sx={{ width: '100%' }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -114,7 +114,14 @@ const Navbar = () => {
           </Box>
         </Toolbar>
       </AppBar>
-      <Box component="nav" sx={navbarStyles.nav}>
+      <Box
+        component="nav"
+        sx={{
+          width: { md: drawerWidth },
+          flexShrink: { sm: 0 },
+          height: '100vh'
+        }}
+      >
         <Drawer
           variant="temporary"
           open={isOpen}

@@ -19,12 +19,12 @@ import Home from './pages/Home'
 import ManageSeason from './pages/ManageSeason'
 import UpdateFeatures from './pages/UpdateFeatures'
 import UpdateAboutUs from './pages/UpdateAboutUs'
-import UpdateRates from './pages/UpdateRates'
 import UpdateContactUs from './pages/UpdateContactUs'
 
 import Login from './components/Login'
 import AuthState from './components/Authentication/AuthState'
 import ProtectedRoutes from './components/Authentication/ProtectedRoutes'
+import ManageRooms from './pages/ManageRooms'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -37,10 +37,10 @@ root.render(
             <Route path="/" element={<Login />} />
             <Route element={<ProtectedRoutes />}>
               <Route path="admin" element={<App />}>
-                <Route path='home' element={<Home />} />
+                <Route path="home" element={<Home />} />
                 <Route path="update-pages" element={<UpdatePages />} />
                 <Route path="reservation-list" element={<ReservationList />} />
-                <Route path="manage-rooms" element={<UpdateRates />} />
+                <Route path="manage-rooms" element={<ManageRooms />} />
                 <Route path="hotel-status" element={<HotelStatus />} />
                 <Route path="update-home" element={<UpdateHome />} />
                 <Route path="update-features" element={<UpdateFeatures />} />
@@ -50,7 +50,7 @@ root.render(
                   path="room-availability"
                   element={<RoomAvailability />}
                 />
-                 <Route path="seasons" element={<ManageSeason />} />
+                <Route path="seasons" element={<ManageSeason />} />
                 <Route path="advertising" element={<Advertising />} />
                 <Route path="*" element={<NotFound />} />
               </Route>
