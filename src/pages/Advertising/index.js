@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useRef } from 'react'
 
 import CustomizedTable from '../../components/Table'
@@ -8,14 +7,12 @@ import { LoaderSpinner } from '../../components/Loader'
 
 import { useForm, Controller } from 'react-hook-form'
 
-import { Button, Box, TextField, MenuItem, Grid } from '@mui/material'
+import { Box, TextField, Grid } from '@mui/material'
 
 import { getAdvertisingInfo } from '../../services/Gets/getAdvertisingInfo'
 import { editAdvertisingInfo } from '../../services/Puts/editAdvertisingInfo'
 import { addAdvertising } from '../../services/Posts/addAdvertising'
 import { DeleteAdvertising } from '../../services/Deletes/deleteAdvertising'
-
-import { advertisingStyles } from './styles'
 
 const columns = [
   { id: 'id', label: 'ID', minWidth: 50 },
@@ -32,12 +29,12 @@ const columns = [
 
 const Advertising = () => {
   const [advertisingList, setAdvertisingList] = useState()
-  const fileInput = useRef()
   const [currentAdvertising, setCurrentAdvertising] = useState()
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [stateModal, setStateModal] = useState({ msg: '', isOpen: false })
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const fileInput = useRef()
   const {
     control,
     handleSubmit,
