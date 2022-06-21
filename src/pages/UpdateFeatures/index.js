@@ -34,14 +34,6 @@ const UpdateFeatures = () => {
   const [stateModal, setStateModal] = useState({ msg: '', isOpen: false })
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const fileInput = useRef()
-
-  const getAllFeatures = () => {
-    getFeatures().then((response) => {
-      setFeatures(response)
-      console.log(response)
-    })
-  }
-
   const {
     control,
     handleSubmit,
@@ -53,6 +45,16 @@ const UpdateFeatures = () => {
     reset()
   }, [isEditModalOpen, isAddModalOpen])
 
+  const getAllFeatures = () => {
+    getFeatures().then((response) => {
+      setFeatures(response)
+    })
+  }
+
+  useEffect(() => {
+    getAllFeatures()
+  }, [])
+
   const onAdd = (values) => {
     const formData = new FormData()
     formData.append('featureDescription', values.FeatureDescription)
@@ -63,15 +65,6 @@ const UpdateFeatures = () => {
       setStateModal({ msg: response, isOpen: true })
       getAllFeatures()
     })
-  }
-
-  const setEditValue = (featureId) => {
-    setCurrentFeature(
-      features.find((f) => {
-        return f.id === featureId
-      })
-    )
-    setIsEditModalOpen(true)
   }
 
   const onEdit = async (values) => {
@@ -89,16 +82,6 @@ const UpdateFeatures = () => {
     getAllFeatures()
   }
 
-  const setDeleteValue = async (featureId) => {
-    setCurrentFeature(
-      features.find((feature) => {
-        return feature.id === featureId
-      })
-    )
-    console.log(currentFeature)
-    setIsDeleteModalOpen(true)
-  }
-
   const onDelete = async () => {
     const response = await deleteFeature(currentFeature.id)
     setIsDeleteModalOpen(false)
@@ -106,61 +89,70 @@ const UpdateFeatures = () => {
     getAllFeatures()
   }
 
-  useEffect(() => {
-    getAllFeatures()
-  }, [])
+  const setEditValue = (featureId) => {
+    setCurrentFeature(
+      features.find((f) => {
+        return f.id === featureId
+      })
+    )
+    setIsEditModalOpen(true)
+  }
+
+  const setDeleteValue = async (featureId) => {
+    setCurrentFeature(featureId)
+    setIsDeleteModalOpen(true)
+  }
 
   const addModalBody = (
-    <Box
-      component="form"
-      id="add_form"
-      sx={{
-        '& .MuiTextField-root': {
-          width: '100%',
-          my: '.5rem'
-        }
-      }}
-      onSubmit={handleSubmit(onAdd)}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center'
-        }}
+    <Box component="form" id="add_form" onSubmit={handleSubmit(onAdd)}>
+      <Grid
+        container
+        justifyContent="flex-start"
+        flexDirection="column"
+        spacing={{ xs: 0.5, sm: 0.5, md: 2 }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
       >
-        <Controller
-          control={control}
-          name="FeatureDescription"
-          rules={{ required: true }}
-          render={({ field: { ref, ...field } }) => (
-            <TextField
-              {...field}
-              inputRef={ref}
-              autoFocus
-              margin="dense"
-              type="text"
-              fullWidth
-              variant="standard"
-              error={!!errors.FeatureDescription}
-              label="Facilidad"
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name="FeatureImage"
-          rules={{ required: true }}
-          render={({ field: { ...field } }) => (
-            <TextField
-              {...field}
-              inputRef={fileInput}
-              error={!!errors.FeatureImage}
-              type="file"
-            />
-          )}
-        />
-      </Box>
+        <Grid item>
+          <Controller
+            control={control}
+            name="FeatureDescription"
+            rules={{ required: true }}
+            render={({ field: { ref, ...field } }) => (
+              <TextField
+                {...field}
+                inputRef={ref}
+                autoFocus
+                margin="dense"
+                type="text"
+                fullWidth
+                variant="standard"
+                error={!!errors.FeatureDescription}
+                label="Facilidad"
+              />
+            )}
+          />
+        </Grid>
+        <Grid item>
+          <Controller
+            control={control}
+            name="FeatureImage"
+            rules={{ required: true }}
+            render={({ field: { ...field } }) => (
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Box component="label" sx={{ my: '0.5rem' }}>
+                  Subir una nueva imagen
+                </Box>
+                <TextField
+                  {...field}
+                  inputRef={fileInput}
+                  error={!!errors.FeatureImage}
+                  type="file"
+                />
+              </Box>
+            )}
+          />
+        </Grid>
+      </Grid>
     </Box>
   )
 

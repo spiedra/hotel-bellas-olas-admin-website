@@ -3,7 +3,7 @@ import { getSeasons } from '../../services/Gets/getSeasons'
 import CustomizedTable from '../../components/Table'
 import AddButton from '../../components/AddButton'
 import Modal from '../../components/Modal'
-import { Box, TextField } from '@mui/material'
+import { Box, Grid, TextField } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import { addSeason } from '../../services/Posts/addSeason'
 import { DeleteSeason } from '../../services/Deletes/deleteSeason'
@@ -107,58 +107,57 @@ const ManageSeason = () => {
     <Box
       component="form"
       id="add_form"
-      sx={{
-        '& .MuiTextField-root': {
-          width: '100%',
-          my: '.5rem'
-        }
-      }}
+      autoComplete="off"
       onSubmit={handleSubmit(onAdd)}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center'
-        }}
+      <Grid
+        container
+        justifyContent="flex-start"
+        flexDirection="column"
+        spacing={{ xs: 0.5, sm: 0.5, md: 2 }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
       >
-        <Controller
-          control={control}
-          name="type"
-          rules={{ required: true }}
-          render={({ field: { ref, ...field } }) => (
-            <TextField
-              {...field}
-              inputRef={ref}
-              autoFocus
-              margin="dense"
-              type="text"
-              fullWidth
-              variant="standard"
-              error={!!errors.type}
-              label="Tipo de temporada"
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name="percent"
-          rules={{ required: true }}
-          render={({ field: { ref, ...field } }) => (
-            <TextField
-              {...field}
-              inputRef={ref}
-              autoFocus
-              margin="dense"
-              type="number"
-              fullWidth
-              variant="standard"
-              error={!!errors.percent}
-              label="Porcentaje a aplicar"
-            />
-          )}
-        />
-      </Box>
+        <Grid item>
+          <Controller
+            control={control}
+            name="type"
+            rules={{ required: true }}
+            render={({ field: { ref, ...field } }) => (
+              <TextField
+                {...field}
+                inputRef={ref}
+                autoFocus
+                margin="dense"
+                type="text"
+                fullWidth
+                variant="standard"
+                error={!!errors.type}
+                label="Tipo de temporada"
+              />
+            )}
+          />
+        </Grid>
+        <Grid item>
+          <Controller
+            control={control}
+            name="percent"
+            rules={{ required: true }}
+            render={({ field: { ref, ...field } }) => (
+              <TextField
+                {...field}
+                inputRef={ref}
+                autoFocus
+                margin="dense"
+                type="number"
+                fullWidth
+                variant="standard"
+                error={!!errors.percent}
+                label="Porcentaje a aplicar"
+              />
+            )}
+          />
+        </Grid>
+      </Grid>
     </Box>
   )
 
@@ -166,62 +165,61 @@ const ManageSeason = () => {
     <Box
       component="form"
       id="edit_form"
-      sx={{
-        '& .MuiTextField-root': {
-          width: '100%',
-          my: '.5rem'
-        }
-      }}
       onSubmit={handleSubmit(onEdit)}
+      autoComplete="off"
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center'
-        }}
+      <Grid
+        container
+        justifyContent="flex-start"
+        flexDirection="column"
+        spacing={{ xs: 0.5, sm: 0.5, md: 2 }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
       >
-        <Controller
-          control={control}
-          name="type"
-          rules={{ required: true, min: 1 }}
-          defaultValue={currentSeason.type}
-          render={({ field: { ref, ...field } }) => (
-            <TextField
-              {...field}
-              inputRef={ref}
-              autoFocus
-              margin="dense"
-              type="text"
-              fullWidth
-              defaultValue={currentSeason.type}
-              variant="standard"
-              error={!!errors.type}
-              label="Tipo de temporada"
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name="percent"
-          rules={{ required: true, min: 1 }}
-          defaultValue={currentSeason.percent}
-          render={({ field: { ref, ...field } }) => (
-            <TextField
-              {...field}
-              inputRef={ref}
-              autoFocus
-              margin="dense"
-              type="number"
-              fullWidth
-              defaultValue={currentSeason.percent}
-              variant="standard"
-              error={!!errors.percent}
-              label="Porcentaje a aplicar"
-            />
-          )}
-        />
-      </Box>
+        <Grid item>
+          <Controller
+            control={control}
+            name="type"
+            rules={{ required: true, min: 1 }}
+            defaultValue={currentSeason.type}
+            render={({ field: { ref, ...field } }) => (
+              <TextField
+                {...field}
+                inputRef={ref}
+                autoFocus
+                margin="dense"
+                type="text"
+                fullWidth
+                defaultValue={currentSeason.type}
+                variant="standard"
+                error={!!errors.type}
+                label="Tipo de temporada"
+              />
+            )}
+          />
+        </Grid>
+        <Grid item>
+          <Controller
+            control={control}
+            name="percent"
+            rules={{ required: true, min: 1 }}
+            defaultValue={currentSeason.percent}
+            render={({ field: { ref, ...field } }) => (
+              <TextField
+                {...field}
+                inputRef={ref}
+                autoFocus
+                margin="dense"
+                type="number"
+                fullWidth
+                defaultValue={currentSeason.percent}
+                variant="standard"
+                error={!!errors.percent}
+                label="Porcentaje a aplicar"
+              />
+            )}
+          />
+        </Grid>
+      </Grid>
     </Box>
   )
 
