@@ -1,16 +1,40 @@
-const updateHomeStyles = {
-  mainContainer: {
-    mt: '2rem',
-    pb: '2rem'
+import { theme } from '../../styles/theme'
+
+export const updateHomeStyles = {
+  instructionsContainer: {
+    px: '2rem',
+    pt: '1rem'
   },
-  subContainer: {
-    display: 'flex',
-    gap: '40px',
-    alignItems: 'center',
-    flexWrap: 'wrap'
+  paragraph: {
+    textAlign: 'justify'
   },
-  img: {
-    maxWidth: { xs: 175, md: 400 }
+  select: {
+    '& label.Mui-focused': {
+      color: theme.palette.primary.main
+    },
+    '& .MuiInputLabel-root': {
+      color: 'black'
+    },
+    '& .MuiFormHelperText-root': {
+      color: 'black'
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: theme.palette.primary.main
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'black'
+      },
+      '&:hover fieldset': {
+        borderColor: theme.palette.primary.main
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: theme.palette.primary.main
+      }
+    }
+  },
+  button: {
+    marginTop: '1.5rem',
+    marginBottom: '2rem'
   }
 }
-export default updateHomeStyles

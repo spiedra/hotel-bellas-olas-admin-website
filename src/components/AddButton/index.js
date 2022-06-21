@@ -3,16 +3,16 @@ import { Button } from '@mui/material'
 
 const AddButton = ({ onAdd }) => {
   return (
-        <>
-            <Button
-            variant="contained"
-            color="primary"
-            style={{ marginBottom: '20px' }}
-            onClick={onAdd}
-          >
-            Agregar
-          </Button>
-        </>
+    <>
+      <Button
+        variant="contained"
+        color="primary"
+        style={{ marginBottom: '1.5rem' }}
+        onClick={onAdd}
+      >
+        Agregar
+      </Button>
+    </>
   )
 }
 

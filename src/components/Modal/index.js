@@ -2,31 +2,25 @@ import React from 'react'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 import Dialog from '@mui/material/Dialog'
-import { DialogActions } from '@mui/material'
-import useMediaQuery from '@mui/material/useMediaQuery'
-import { useTheme } from '@emotion/react'
+import { Button, DialogActions } from '@mui/material'
+
 const Modal = (props) => {
-  const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
   return (
-        <>
-        <Dialog
-          open={props.isOpen}
-          onClose={props.onClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-          fullWidth="true"
-          fullScreen={fullScreen}
-        >
-          <DialogTitle id="alert-dialog-title">{props.title}</DialogTitle>
-          <DialogContent>
-              {props.modalBody}
-          </DialogContent>
-          <DialogActions>
-            {props.modalActions}
-          </DialogActions>
-        </Dialog>
-        </>
+    <Dialog
+      open={props.isOpen}
+      onClose={props.onClose}
+      fullWidth={true}
+      maxWidth={props.maxWidth || 'sm'}
+    >
+      <DialogTitle>{props.title}</DialogTitle>
+      <DialogContent>{props.content}</DialogContent>
+      <DialogActions>
+        <Button type="submit" form={props.idForm} onClick={props.onSubmit}>
+          Aceptar
+        </Button>
+        <Button onClick={props.onClose}>Cerrar</Button>
+      </DialogActions>
+    </Dialog>
   )
 }
 

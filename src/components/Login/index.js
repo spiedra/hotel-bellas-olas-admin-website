@@ -1,24 +1,23 @@
 import React, { useState, useContext, useEffect } from 'react'
-import Dialog from '@mui/material/Dialog'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
-import DialogTitle from '@mui/material/DialogTitle'
 import Box from '@mui/material/Box'
 import { LoginStyles } from './styles'
 import Typography from '@mui/material/Typography'
 import { useNavigate } from 'react-router'
 import AuthContext from '../../components/Authentication/AuthContext.js'
+import Modal from '../Modal'
+
+const SUCCESSFUL = true
+const INVALID_USER = false
 
 export const Login = () => {
   const [userInfo, setUserInfo] = useState({ userName: '', password: '' })
-  const [dialogInfo, setDialogInfo] = useState({ open: false, msg: '' })
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalResponse, setModalResponse] = useState()
   const { loginUser, userAuth } = useContext(AuthContext)
-  const SUCCESSFUL = true
-  const INVALID_USER = false
   const navigate = useNavigate()
+
   const handleUserInputChange = (event) => {
     setUserInfo({
       ...userInfo,
@@ -29,18 +28,12 @@ export const Login = () => {
   useEffect(() => {
     if (userAuth === SUCCESSFUL) {
       navigate('admin/home')
+    } else if (userAuth === INVALID_USER) {
+      setModalResponse('Los datos no coinciden con ningún usuario')
+      setIsModalOpen(true)
     }
-  }, [userAuth])
+  }, [loginUser])
 
-  const handleLogin = () => {
-    loginUser(userInfo)
-    if (userAuth === INVALID_USER) {
-      setDialogInfo({
-        msg: 'Los datos no coinciden con ningún usuario',
-        open: true
-      })
-    }
-  }
   return (
     <>
       <Typography variant="h3" sx={LoginStyles.LoginTitle}>
@@ -54,6 +47,7 @@ export const Login = () => {
             margin="normal"
             name="userName"
             required
+            sx={{ width: '100%' }}
             onChange={handleUserInputChange}
             value={userInfo.userName}
           />
@@ -64,6 +58,7 @@ export const Login = () => {
             required
             name="password"
             type="password"
+            sx={{ width: '100%' }}
             onChange={handleUserInputChange}
             value={userInfo.password}
           />
@@ -71,33 +66,20 @@ export const Login = () => {
             sx={LoginStyles.Button}
             variant="contained"
             color="primary"
-            onClick={handleLogin}
+            onClick={() => loginUser(userInfo)}
           >
             Ingresar
           </Button>
         </Box>
-        <Dialog
-          open={dialogInfo.open}
-          onClose={() => setDialogInfo({ open: false })}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">Iniciar sesión</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              {dialogInfo.msg}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => setDialogInfo({ open: false })}
-              color="primary"
-            >
-              Okay
-            </Button>
-          </DialogActions>
-        </Dialog>
       </Box>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={() => setIsModalOpen(false)}
+        title="Mensaje del sistema"
+        content={modalResponse}
+      />
     </>
   )
 }

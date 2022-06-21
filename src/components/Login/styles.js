@@ -17,7 +17,8 @@ export const LoginStyles = {
     alignItems: 'center',
     justifyContent: 'center',
     border: '1px solid lightgray',
-    padding: '50px'
+    padding: '50px',
+    width: '25vw'
   },
   Button: {
     marginTop: '40px'

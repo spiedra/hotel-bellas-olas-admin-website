@@ -1,14 +1,14 @@
-/* eslint-disable no-unused-vars */
-
 import React, { useEffect, useState } from 'react'
 import { getSeasons } from '../../services/Gets/getSeasons'
 import CustomizedTable from '../../components/Table'
 import AddButton from '../../components/AddButton'
 import Modal from '../../components/Modal'
-import { Box, Button, TextField } from '@mui/material'
+import { Box, Grid, TextField } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import { addSeason } from '../../services/Posts/addSeason'
 import { DeleteSeason } from '../../services/Deletes/deleteSeason'
+import { LoaderSpinner } from '../../components/Loader'
+import { editSeason } from '../../services/Puts/editSeason'
 
 const columns = [
   { id: 'id', label: 'ID', minWidth: 170 },
@@ -23,23 +23,23 @@ const columns = [
 ]
 
 const ManageSeason = () => {
+  const [seasons, setSeasons] = useState()
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [isModalResponseOpen, setIsModalResponseOpen] = useState(false)
+  const [response, setResponse] = useState()
+  const [currentSeason, setCurrentSeason] = useState({ type: '', percent: 0 })
+
   const {
     control,
     handleSubmit,
-    formState: { errors }
-  } = useForm({
-    defaultValues: {
-      type: '',
-      PercentApply: 0
-    }
-  })
-  const [seasons, setSeasons] = useState()
-  const [isInsertModalOpen, setIsInsertModalOpen] = useState(false)
-  const [stateModal, setStateModal] = useState({ msg: '', isOpen: false })
-  const [currentEditSeason, setCurrentEditSeason] = useState({ id: -1, type: '', percent: 0 })
+    formState: { errors },
+    reset
+  } = useForm()
 
   const getAllSeasons = () => {
-    getSeasons().then(response => {
+    getSeasons().then((response) => {
       setSeasons(response)
     })
   }
@@ -48,128 +48,238 @@ const ManageSeason = () => {
     getAllSeasons()
   }, [])
 
-  const onAdd = async (values) => {
+  useEffect(() => {
+    reset()
+  }, [isEditModalOpen, isAddModalOpen])
+
+  const onAdd = (values) => {
     const formData = new FormData()
     formData.append('type', values.type)
     formData.append('PercentApply', values.percent)
-    const response = await addSeason(formData)
-    setIsInsertModalOpen(false)
-    setStateModal({ msg: response, isOpen: true })
-    getAllSeasons()
+
+    addSeason(formData).then((response) => {
+      setResponse(response)
+      setIsAddModalOpen(false)
+      setIsModalResponseOpen(true)
+      getAllSeasons()
+    })
   }
 
-  const setEditValue = (seasonId) => {
-    setCurrentEditSeason(seasons.filter((s) => { return s.id === seasonId })[0])
+  const onEdit = (values) => {
+    const formData = new FormData()
+    formData.append('SeasonId', currentSeason.id)
+    formData.append('Type', values.type || currentSeason.type)
+    formData.append('PercentApply', values.percent || currentSeason.percent)
+
+    editSeason(formData).then((response) => {
+      setResponse(response)
+      setIsEditModalOpen(false)
+      setIsModalResponseOpen(true)
+      getAllSeasons()
+    })
   }
 
-  const onEdit = () => {
-
-  }
-
-  const onDelete = async (seasonId) => {
-    console.log('a borrar: ' + seasonId)
-    const response = await DeleteSeason(seasonId)
-    setIsInsertModalOpen(false)
-    setStateModal({ msg: response, isOpen: true })
-    getAllSeasons()
-  }
-
-  const ModalInsertBody = () => {
-    return (
-        <>
-            <Box
-          component="form"
-          sx={{
-            height: '10rem',
-            width: { xs: '100%', md: '60%' },
-            '& .MuiTextField-root': {
-              width: '100%',
-              my: '.5rem'
-            }
-          }}
-          onSubmit={handleSubmit(onAdd)}
-        >
-            <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              height: '100%'
-            }}
-          >
-            <Controller
-              control={control}
-              name="type"
-              rules={{ required: true }}
-              render={({ field: { ref, ...field } }) => (
-                <TextField
-                  {...field}
-                  inputRef={ref}
-                  error={!!errors.type}
-                  label="Tipo de temporada"
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="percent"
-              rules={{ required: true }}
-              render={({ field: { ref, ...field } }) => (
-                <TextField
-                  {...field}
-                  inputRef={ref}
-                  error={!!errors.percent}
-                  label="Porcentaje a aplicar"
-                />
-              )}
-            />
-          </Box>
-          <Button
-              sx={{ mr: '1rem' }}
-              type="submit"
-              variant="contained"
-              color="primary"
-              style={{ marginBottom: '50px' }}
-            >
-              Aceptar
-            </Button>
-            <Button
-              type="button"
-              variant="contained"
-              color="primary"
-              onClick={() => setIsInsertModalOpen(false)}
-              style={{ marginBottom: '50px' }}
-            >
-              Cancelar
-            </Button>
-            </Box>
-        </>
+  const setEditValue = (currentRowId) => {
+    setCurrentSeason(
+      seasons.find((season) => {
+        return season.id === currentRowId
+      })
     )
+    setIsEditModalOpen(true)
   }
+
+  const setDeleteValue = (currentRowId) => {
+    setCurrentSeason(
+      seasons.find((season) => {
+        return season.id === currentRowId
+      })
+    )
+    setIsDeleteModalOpen(true)
+  }
+
+  const onDelete = async () => {
+    await DeleteSeason(currentSeason.id)
+    setIsDeleteModalOpen(false)
+    getAllSeasons()
+  }
+
+  const addModalBody = (
+    <Box
+      component="form"
+      id="add_form"
+      autoComplete="off"
+      onSubmit={handleSubmit(onAdd)}
+    >
+      <Grid
+        container
+        justifyContent="flex-start"
+        flexDirection="column"
+        spacing={{ xs: 0.5, sm: 0.5, md: 2 }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
+      >
+        <Grid item>
+          <Controller
+            control={control}
+            name="type"
+            rules={{ required: true }}
+            render={({ field: { ref, ...field } }) => (
+              <TextField
+                {...field}
+                inputRef={ref}
+                autoFocus
+                margin="dense"
+                type="text"
+                fullWidth
+                variant="standard"
+                error={!!errors.type}
+                label="Tipo de temporada"
+              />
+            )}
+          />
+        </Grid>
+        <Grid item>
+          <Controller
+            control={control}
+            name="percent"
+            rules={{ required: true }}
+            render={({ field: { ref, ...field } }) => (
+              <TextField
+                {...field}
+                inputRef={ref}
+                autoFocus
+                margin="dense"
+                type="number"
+                fullWidth
+                variant="standard"
+                error={!!errors.percent}
+                label="Porcentaje a aplicar"
+              />
+            )}
+          />
+        </Grid>
+      </Grid>
+    </Box>
+  )
+
+  const editModalBody = (
+    <Box
+      component="form"
+      id="edit_form"
+      onSubmit={handleSubmit(onEdit)}
+      autoComplete="off"
+    >
+      <Grid
+        container
+        justifyContent="flex-start"
+        flexDirection="column"
+        spacing={{ xs: 0.5, sm: 0.5, md: 2 }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
+      >
+        <Grid item>
+          <Controller
+            control={control}
+            name="type"
+            rules={{ required: true, min: 1 }}
+            defaultValue={currentSeason.type}
+            render={({ field: { ref, ...field } }) => (
+              <TextField
+                {...field}
+                inputRef={ref}
+                autoFocus
+                margin="dense"
+                type="text"
+                fullWidth
+                defaultValue={currentSeason.type}
+                variant="standard"
+                error={!!errors.type}
+                label="Tipo de temporada"
+              />
+            )}
+          />
+        </Grid>
+        <Grid item>
+          <Controller
+            control={control}
+            name="percent"
+            rules={{ required: true, min: 1 }}
+            defaultValue={currentSeason.percent}
+            render={({ field: { ref, ...field } }) => (
+              <TextField
+                {...field}
+                inputRef={ref}
+                autoFocus
+                margin="dense"
+                type="number"
+                fullWidth
+                defaultValue={currentSeason.percent}
+                variant="standard"
+                error={!!errors.percent}
+                label="Porcentaje a aplicar"
+              />
+            )}
+          />
+        </Grid>
+      </Grid>
+    </Box>
+  )
+
   return (
+    <Box>
+      <Box
+        component="h1"
+        sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, mb: '.8rem' }}
+      >
+        Administración de Temporadas
+      </Box>
+      {seasons
+        ? (
         <>
-            <h1>Administración de temporadas</h1>
-            <AddButton onAdd={() => setIsInsertModalOpen(true)}/>
-                {seasons
-                  ? (
-            <CustomizedTable action={true} onEdit={setEditValue} onDelete={onDelete} columns={columns} rows={seasons || []} />
-                    )
-                  : (
-                      ''
-                    )}
-            <Modal
-            isOpen ={isInsertModalOpen}
-            onClose={() => setIsInsertModalOpen(false)}
-            title={'Insertar temporada'}
-            modalBody={<ModalInsertBody/>}
-            />
-            <Modal
-            isOpen ={stateModal.isOpen}
-            onClose={() => setStateModal({ isOpen: false })}
-            title={'Mensaje del sistema'}
-            modalBody={stateModal.msg}
-            />
+          <AddButton onAdd={() => setIsAddModalOpen(true)} />
+          <CustomizedTable
+            action={true}
+            onEdit={setEditValue}
+            onDelete={setDeleteValue}
+            columns={columns}
+            rows={seasons || []}
+          />
         </>
+          )
+        : (
+        <LoaderSpinner />
+          )}
+
+      <Modal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        title="Insertar Temporada"
+        idForm="add_form"
+        content={addModalBody}
+      />
+
+      <Modal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        idForm="edit_form"
+        title={'Editar Temporada'}
+        content={editModalBody}
+      />
+
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        title={'Eliminar Temporada'}
+        onSubmit={onDelete}
+        content="¿Está seguro de eliminar esta facilidad?"
+      />
+
+      <Modal
+        isOpen={isModalResponseOpen}
+        onClose={() => setIsModalResponseOpen(false)}
+        title={'Mensaje del sistema'}
+        onSubmit={() => setIsModalResponseOpen(false)}
+        content={response}
+      />
+    </Box>
   )
 }
 
