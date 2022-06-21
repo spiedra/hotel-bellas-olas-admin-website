@@ -1,22 +1,23 @@
 import React, { useEffect, useState, useRef } from 'react'
 
 import CustomizedTable from '../../components/Table'
-
-import { useForm, Controller } from 'react-hook-form'
-import { Box, TextField, Grid } from '@mui/material'
-
 import Modal from '../../components/Modal'
 import AddButton from '../../components/AddButton'
 import { LoaderSpinner } from '../../components/Loader'
 
-import { getFeatures } from '../../services/Gets/getFeatures'
-import { deleteFeature } from '../../services/Deletes/deleteFeature'
-import { editFeature } from '../../services/Puts/editFeature'
-import { addFeature } from '../../services/Posts/addFeature'
+import { useForm, Controller } from 'react-hook-form'
+
+import { Box, TextField, Grid } from '@mui/material'
+
+import { getAdvertisingInfo } from '../../services/Gets/getAdvertisingInfo'
+import { editAdvertisingInfo } from '../../services/Puts/editAdvertisingInfo'
+import { addAdvertising } from '../../services/Posts/addAdvertising'
+import { DeleteAdvertising } from '../../services/Deletes/deleteAdvertising'
 
 const columns = [
-  { id: 'id', label: 'ID', minWidth: 10 },
-  { id: 'feature', label: 'Facilidad', maxWidth: 400 },
+  { id: 'id', label: 'ID', minWidth: 50 },
+  { id: 'adLink', label: 'URL', maxWidth: 400 },
+  { id: 'info', label: 'Información', maxWidth: 400 },
   {
     id: 'img',
     label: 'Imagen',
@@ -26,9 +27,9 @@ const columns = [
   }
 ]
 
-const UpdateFeatures = () => {
-  const [features, setFeatures] = useState()
-  const [currentFeature, setCurrentFeature] = useState()
+const Advertising = () => {
+  const [advertisingList, setAdvertisingList] = useState()
+  const [currentAdvertising, setCurrentAdvertising] = useState()
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [stateModal, setStateModal] = useState({ msg: '', isOpen: false })
@@ -37,61 +38,63 @@ const UpdateFeatures = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
-    reset
+    reset,
+    formState: { errors }
   } = useForm()
 
   useEffect(() => {
     reset()
-  }, [isEditModalOpen, isAddModalOpen])
+  }, [isAddModalOpen, isEditModalOpen])
 
-  const getAllFeatures = () => {
-    getFeatures().then((response) => {
-      setFeatures(response)
+  useEffect(() => {
+    getAllAdvertising()
+  }, [])
+
+  const getAllAdvertising = () => {
+    getAdvertisingInfo().then((response) => {
+      setAdvertisingList(response)
     })
   }
 
-  useEffect(() => {
-    getAllFeatures()
-  }, [])
-
   const onAdd = (values) => {
     const formData = new FormData()
-    formData.append('featureDescription', values.FeatureDescription)
-    formData.append('featureImage', fileInput.current.files[0])
+    formData.append('AdLink', values.AdLink)
+    formData.append('AdInfo', values.AdInfo)
+    formData.append('Image', fileInput.current.files[0])
 
-    addFeature(formData).then((response) => {
+    addAdvertising(formData).then((response) => {
       setIsAddModalOpen(false)
       setStateModal({ msg: response, isOpen: true })
-      getAllFeatures()
+      getAllAdvertising()
     })
   }
 
   const onEdit = async (values) => {
     const formData = new FormData()
-    formData.append('featureId', currentFeature.id)
-    formData.append('featureDescription', values.FeatureDescription)
+    formData.append('AdvertisingId', currentAdvertising.id)
+    formData.append('AdLink', values.AdLink)
+    formData.append('AdInfo', values.AdInfo)
 
     if (fileInput.current.files[0]) {
-      formData.append('featureImage', fileInput.current.files[0])
+      formData.append('Image', fileInput.current.files[0])
     }
 
-    const response = await editFeature(formData)
-    setStateModal({ isOpen: true, msg: response })
+    const response = await editAdvertisingInfo(formData)
+    setStateModal({ msg: response, isOpen: true })
     setIsEditModalOpen(false)
-    getAllFeatures()
+    getAllAdvertising()
   }
 
   const onDelete = async () => {
-    const response = await deleteFeature(currentFeature.id)
+    const response = await DeleteAdvertising(currentAdvertising)
     setIsDeleteModalOpen(false)
     setStateModal({ msg: response, isOpen: true })
-    getAllFeatures()
+    getAllAdvertising()
   }
 
   const setEditValue = (featureId) => {
-    setCurrentFeature(
-      features.find((f) => {
+    setCurrentAdvertising(
+      advertisingList.find((f) => {
         return f.id === featureId
       })
     )
@@ -99,7 +102,7 @@ const UpdateFeatures = () => {
   }
 
   const setDeleteValue = async (featureId) => {
-    setCurrentFeature(featureId)
+    setCurrentAdvertising(featureId)
     setIsDeleteModalOpen(true)
   }
 
@@ -120,19 +123,18 @@ const UpdateFeatures = () => {
         <Grid item>
           <Controller
             control={control}
-            name="FeatureDescription"
+            name="AdLink"
             rules={{ required: true }}
-            render={({ field: { ref, ...field } }) => (
+            render={({ field: { ...field } }) => (
               <TextField
                 {...field}
-                inputRef={ref}
+                type="text"
                 autoFocus
                 margin="dense"
-                type="text"
                 fullWidth
                 variant="standard"
-                error={!!errors.FeatureDescription}
-                label="Facilidad"
+                error={!!errors.AdLink}
+                label="URL"
               />
             )}
           />
@@ -140,7 +142,26 @@ const UpdateFeatures = () => {
         <Grid item>
           <Controller
             control={control}
-            name="FeatureImage"
+            name="AdInfo"
+            rules={{ required: true }}
+            render={({ field: { ...field } }) => (
+              <TextField
+                {...field}
+                autoFocus
+                margin="dense"
+                type="text"
+                fullWidth
+                variant="standard"
+                error={!!errors.AdInfo}
+                label="Información"
+              ></TextField>
+            )}
+          />
+        </Grid>
+        <Grid item>
+          <Controller
+            control={control}
+            name="image"
             rules={{ required: true }}
             render={({ field: { ...field } }) => (
               <TextField
@@ -149,9 +170,9 @@ const UpdateFeatures = () => {
                 InputLabelProps={{ shrink: true }}
                 autoFocus
                 margin="dense"
-                type="file"
                 fullWidth
-                error={!!errors.FeatureImage}
+                type="file"
+                error={!!errors.image}
                 label="Subir una nueva imagen"
               />
             )}
@@ -170,7 +191,7 @@ const UpdateFeatures = () => {
         justifyContent: { sm: 'flex-start', md: 'space-around' }
       }}
     >
-      {currentFeature
+      {currentAdvertising
         ? (
         <>
           <Box>
@@ -178,8 +199,8 @@ const UpdateFeatures = () => {
             <Box
               component="img"
               sx={{ maxWidth: { xs: 175, md: 400 } }}
-              alt={'facilidad-img'}
-              src={currentFeature.img}
+              alt={'advertising-img'}
+              src={currentAdvertising.img}
             ></Box>
           </Box>
           <Box
@@ -205,18 +226,18 @@ const UpdateFeatures = () => {
               <Grid item>
                 <Controller
                   control={control}
-                  name="FeatureDescription"
+                  name="AdLink"
                   rules={{ required: true, min: 1 }}
-                  defaultValue={currentFeature.feature}
+                  defaultValue={currentAdvertising.adLink}
                   render={({ field: { ...field } }) => (
                     <TextField
                       {...field}
                       type="text"
-                      error={!!errors.FeatureDescription}
-                      label="Facilidad"
-                      defaultValue={currentFeature.feature}
-                      multiline
-                      rows={4}
+                      error={!!errors.AdLink}
+                      margin="dense"
+                      fullWidth
+                      label="URL"
+                      defaultValue={currentAdvertising.adLink}
                     />
                   )}
                 />
@@ -224,7 +245,26 @@ const UpdateFeatures = () => {
               <Grid item>
                 <Controller
                   control={control}
-                  name="FeatureImage"
+                  name="AdInfo"
+                  rules={{ required: true, min: 1 }}
+                  defaultValue={currentAdvertising.info}
+                  render={({ field: { ...field } }) => (
+                    <TextField
+                      {...field}
+                      type="text"
+                      error={!!errors.AdInfo}
+                      margin="dense"
+                      fullWidth
+                      label="Información"
+                      defaultValue={currentAdvertising.info}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item>
+                <Controller
+                  control={control}
+                  name="image"
                   render={({ field: { ...field } }) => (
                     <TextField
                       {...field}
@@ -232,9 +272,9 @@ const UpdateFeatures = () => {
                       InputLabelProps={{ shrink: true }}
                       autoFocus
                       margin="dense"
-                      type="file"
                       fullWidth
-                      error={!!errors.FeatureImage}
+                      type="file"
+                      error={!!errors.image}
                       label="Subir una nueva imagen"
                     />
                   )}
@@ -252,41 +292,44 @@ const UpdateFeatures = () => {
 
   return (
     <>
-      <Box
-        component="h1"
-        sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, mb: '.8rem' }}
-      >
-        Administración | Pagina de Facilidades
+      <Box>
+        <Box
+          component="h1"
+          sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, mb: '.8rem' }}
+        >
+          Administración de Publicidad
+        </Box>
+        {advertisingList
+          ? (
+          <>
+            <AddButton onAdd={() => setIsAddModalOpen(true)} />
+            <CustomizedTable
+              action={true}
+              onEdit={setEditValue}
+              withImage={'img'}
+              onDelete={setDeleteValue}
+              columns={columns}
+              rows={advertisingList || []}
+            />
+          </>
+            )
+          : (
+          <LoaderSpinner />
+            )}
       </Box>
-      {features
-        ? (
-        <>
-          <AddButton onAdd={() => setIsAddModalOpen(true)} />
-          <CustomizedTable
-            action={true}
-            onEdit={setEditValue}
-            withImage={'img'}
-            onDelete={setDeleteValue}
-            columns={columns}
-            rows={features || []}
-          />
-        </>
-          )
-        : (
-        <LoaderSpinner />
-          )}
+
       <Modal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        title={'Insertar Facilidad'}
+        title={'Insertar Anuncio'}
         idForm="add_form"
         content={addModalBody}
       />
       <Modal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
+        title={'Modificar Anuncio'}
         maxWidth="lg"
-        title={'Modificar Facilidad'}
         idForm="edit_form"
         content={editModalBody}
       />
@@ -300,12 +343,12 @@ const UpdateFeatures = () => {
       <Modal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
-        title={'Eliminar Temporada'}
+        title={'Eliminar Anuncio'}
         onSubmit={onDelete}
-        content="¿Está seguro de eliminar esta temporada?"
+        content="¿Está seguro de eliminar este anuncio?"
       />
     </>
   )
 }
 
-export default UpdateFeatures
+export default Advertising

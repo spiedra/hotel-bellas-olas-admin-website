@@ -1,106 +1,92 @@
+/* eslint-disable no-unused-vars */
+import { Box, Grid, TextField } from '@mui/material'
 import React, { useEffect, useState, useRef } from 'react'
-
-import CustomizedTable from '../../components/Table'
-
-import { useForm, Controller } from 'react-hook-form'
-import { Box, TextField, Grid } from '@mui/material'
-
-import Modal from '../../components/Modal'
 import AddButton from '../../components/AddButton'
 import { LoaderSpinner } from '../../components/Loader'
+import Modal from '../../components/Modal'
+import CustomizedTable from '../../components/Table'
+import { getAboutUsInfo } from '../../services/Gets/getAboutUsInfo'
 
-import { getFeatures } from '../../services/Gets/getFeatures'
-import { deleteFeature } from '../../services/Deletes/deleteFeature'
-import { editFeature } from '../../services/Puts/editFeature'
-import { addFeature } from '../../services/Posts/addFeature'
+import { useForm, Controller } from 'react-hook-form'
+import { EditGalleryImage } from '../../services/Puts/editGalleryImage'
+import { DeleteImageGallery } from '../../services/Deletes/deleteImageGallery'
+import { addGalleryImage } from '../../services/Posts/addGalleryImage'
 
 const columns = [
-  { id: 'id', label: 'ID', minWidth: 10 },
-  { id: 'feature', label: 'Facilidad', maxWidth: 400 },
-  {
-    id: 'img',
-    label: 'Imagen',
-    minWidth: 170,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US')
-  }
+  { id: 'id', label: 'ID', minWidth: 170 },
+  { id: 'img', label: 'Imagen', maxWidth: 400 }
 ]
 
-const UpdateFeatures = () => {
-  const [features, setFeatures] = useState()
-  const [currentFeature, setCurrentFeature] = useState()
+const ManageGallery = () => {
+  const [aboutUsInfo, setAboutUsInfo] = useState()
+  const [currentImage, setCurrentImage] = useState()
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [stateModal, setStateModal] = useState({ msg: '', isOpen: false })
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [stateModal, setStateModal] = useState({ msg: '', isOpen: false })
   const fileInput = useRef()
   const {
     control,
     handleSubmit,
-    formState: { errors },
-    reset
+    reset,
+    formState: { errors }
   } = useForm()
+
+  const fetchAboutUsInfo = () => {
+    getAboutUsInfo().then((response) => {
+      setAboutUsInfo(response.imgList)
+    })
+  }
+
+  useEffect(() => {
+    fetchAboutUsInfo()
+  }, [])
 
   useEffect(() => {
     reset()
-  }, [isEditModalOpen, isAddModalOpen])
+  }, [isAddModalOpen, isEditModalOpen])
 
-  const getAllFeatures = () => {
-    getFeatures().then((response) => {
-      setFeatures(response)
-    })
-  }
-
-  useEffect(() => {
-    getAllFeatures()
-  }, [])
-
-  const onAdd = (values) => {
-    const formData = new FormData()
-    formData.append('featureDescription', values.FeatureDescription)
-    formData.append('featureImage', fileInput.current.files[0])
-
-    addFeature(formData).then((response) => {
-      setIsAddModalOpen(false)
-      setStateModal({ msg: response, isOpen: true })
-      getAllFeatures()
-    })
-  }
-
-  const onEdit = async (values) => {
-    const formData = new FormData()
-    formData.append('featureId', currentFeature.id)
-    formData.append('featureDescription', values.FeatureDescription)
-
-    if (fileInput.current.files[0]) {
-      formData.append('featureImage', fileInput.current.files[0])
-    }
-
-    const response = await editFeature(formData)
-    setStateModal({ isOpen: true, msg: response })
-    setIsEditModalOpen(false)
-    getAllFeatures()
-  }
-
-  const onDelete = async () => {
-    const response = await deleteFeature(currentFeature.id)
-    setIsDeleteModalOpen(false)
-    setStateModal({ msg: response, isOpen: true })
-    getAllFeatures()
-  }
-
-  const setEditValue = (featureId) => {
-    setCurrentFeature(
-      features.find((f) => {
-        return f.id === featureId
+  const setEditValue = (imageId) => {
+    setCurrentImage(
+      aboutUsInfo.find((f) => {
+        return f.id === imageId
       })
     )
     setIsEditModalOpen(true)
   }
 
-  const setDeleteValue = async (featureId) => {
-    setCurrentFeature(featureId)
+  const setDeleteValue = (imageId) => {
+    setCurrentImage(imageId)
     setIsDeleteModalOpen(true)
+  }
+
+  const onAdd = () => {
+    const formData = new FormData()
+    formData.append('Image', fileInput.current.files[0])
+
+    addGalleryImage(formData).then((response) => {
+      setIsAddModalOpen(false)
+      setStateModal({ msg: response, isOpen: true })
+      fetchAboutUsInfo()
+    })
+  }
+
+  const onEdit = async () => {
+    const formData = new FormData()
+    formData.append('ImageId', currentImage.id)
+    formData.append('Image', fileInput.current.files[0])
+
+    const response = await EditGalleryImage(formData)
+    setIsEditModalOpen(false)
+    setStateModal({ msg: response, isOpen: true })
+    fetchAboutUsInfo()
+  }
+
+  const onDelete = async () => {
+    const response = await DeleteImageGallery(currentImage)
+    setIsDeleteModalOpen(false)
+    setStateModal({ msg: response, isOpen: true })
+    fetchAboutUsInfo()
   }
 
   const addModalBody = (
@@ -120,27 +106,7 @@ const UpdateFeatures = () => {
         <Grid item>
           <Controller
             control={control}
-            name="FeatureDescription"
-            rules={{ required: true }}
-            render={({ field: { ref, ...field } }) => (
-              <TextField
-                {...field}
-                inputRef={ref}
-                autoFocus
-                margin="dense"
-                type="text"
-                fullWidth
-                variant="standard"
-                error={!!errors.FeatureDescription}
-                label="Facilidad"
-              />
-            )}
-          />
-        </Grid>
-        <Grid item>
-          <Controller
-            control={control}
-            name="FeatureImage"
+            name="image"
             rules={{ required: true }}
             render={({ field: { ...field } }) => (
               <TextField
@@ -149,9 +115,9 @@ const UpdateFeatures = () => {
                 InputLabelProps={{ shrink: true }}
                 autoFocus
                 margin="dense"
-                type="file"
                 fullWidth
-                error={!!errors.FeatureImage}
+                type="file"
+                error={!!errors.image}
                 label="Subir una nueva imagen"
               />
             )}
@@ -170,7 +136,7 @@ const UpdateFeatures = () => {
         justifyContent: { sm: 'flex-start', md: 'space-around' }
       }}
     >
-      {currentFeature
+      {currentImage
         ? (
         <>
           <Box>
@@ -178,8 +144,8 @@ const UpdateFeatures = () => {
             <Box
               component="img"
               sx={{ maxWidth: { xs: 175, md: 400 } }}
-              alt={'facilidad-img'}
-              src={currentFeature.img}
+              alt={'advertising-img'}
+              src={currentImage.img}
             ></Box>
           </Box>
           <Box
@@ -205,26 +171,8 @@ const UpdateFeatures = () => {
               <Grid item>
                 <Controller
                   control={control}
-                  name="FeatureDescription"
-                  rules={{ required: true, min: 1 }}
-                  defaultValue={currentFeature.feature}
-                  render={({ field: { ...field } }) => (
-                    <TextField
-                      {...field}
-                      type="text"
-                      error={!!errors.FeatureDescription}
-                      label="Facilidad"
-                      defaultValue={currentFeature.feature}
-                      multiline
-                      rows={4}
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item>
-                <Controller
-                  control={control}
-                  name="FeatureImage"
+                  name="image"
+                  rules={{ required: true }}
                   render={({ field: { ...field } }) => (
                     <TextField
                       {...field}
@@ -232,9 +180,9 @@ const UpdateFeatures = () => {
                       InputLabelProps={{ shrink: true }}
                       autoFocus
                       margin="dense"
-                      type="file"
                       fullWidth
-                      error={!!errors.FeatureImage}
+                      type="file"
+                      error={!!errors.image}
                       label="Subir una nueva imagen"
                     />
                   )}
@@ -256,9 +204,9 @@ const UpdateFeatures = () => {
         component="h1"
         sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, mb: '.8rem' }}
       >
-        Administración | Pagina de Facilidades
+        Administración | Galería
       </Box>
-      {features
+      {aboutUsInfo
         ? (
         <>
           <AddButton onAdd={() => setIsAddModalOpen(true)} />
@@ -268,7 +216,7 @@ const UpdateFeatures = () => {
             withImage={'img'}
             onDelete={setDeleteValue}
             columns={columns}
-            rows={features || []}
+            rows={aboutUsInfo || []}
           />
         </>
           )
@@ -278,15 +226,15 @@ const UpdateFeatures = () => {
       <Modal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        title={'Insertar Facilidad'}
+        title={'Insertar Imagen'}
         idForm="add_form"
         content={addModalBody}
       />
       <Modal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
+        title={'Modificar Imagen'}
         maxWidth="lg"
-        title={'Modificar Facilidad'}
         idForm="edit_form"
         content={editModalBody}
       />
@@ -300,12 +248,12 @@ const UpdateFeatures = () => {
       <Modal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
-        title={'Eliminar Temporada'}
+        title={'Eliminar Imagen'}
         onSubmit={onDelete}
-        content="¿Está seguro de eliminar esta temporada?"
+        content="¿Está seguro de eliminar esta imagen?"
       />
     </>
   )
 }
 
-export default UpdateFeatures
+export default ManageGallery

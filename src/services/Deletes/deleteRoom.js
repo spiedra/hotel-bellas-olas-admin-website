@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-const baseURL = 'https://localhost:7233/API/Hotel/DeleteHotelFeature/'
+const baseURL = 'https://localhost:7233/API/Room/DeleteRoomTariff/'
 
-export const deleteFeature = (id) => {
+export const deleteRoom = (id) => {
   return axios
     .delete(
       baseURL + id

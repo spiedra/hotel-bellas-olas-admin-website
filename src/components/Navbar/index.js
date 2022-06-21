@@ -20,28 +20,32 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import { navbarItems } from './consts/index'
 import { navbarStyles } from './styles'
 import { Button } from '@mui/material'
+
+import Logo from '../../assets/logo.png'
+
 import AuthContext from '../../components/Authentication/AuthContext.js'
 
 const drawerWidth = 300
+const LOG_OUT = -1
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate()
-  const { logoutUser, userAuth } = useContext(AuthContext)
+  const { userName, logoutUser, userAuth } = useContext(AuthContext)
 
   const handleDrawerToggle = () => {
     setIsOpen(!isOpen)
   }
 
   useEffect(() => {
-    if (userAuth === false) {
+    if (userAuth === LOG_OUT) {
       navigate('/')
     }
   }, [userAuth])
 
   const drawer = (
     <div>
-      <Toolbar sx={navbarStyles.toolbarClose}>
+      <Toolbar sx={{ justifyContent: 'flex-end' }}>
         <IconButton
           color="inherit"
           aria-label="open drawer"
@@ -71,7 +75,7 @@ const Navbar = () => {
 
   return (
     <>
-      <AppBar position="fixed" sx={navbarStyles.appBar}>
+      <AppBar position="fixed" sx={{ width: '100%' }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -82,18 +86,42 @@ const Navbar = () => {
           >
             <MenuIcon />
           </IconButton>
+          <Box component="span" sx={{ mr: '.3rem', mt: '.2rem' }}>
+            <img
+              src={Logo}
+              width="64"
+              height="64"
+              alt="Hotel bellas olas logo"
+            />
+          </Box>
           <Typography variant="h6" noWrap component="div">
             Hotel Bellas Olas | Administración
           </Typography>
-          <Button
-            sx={{ flex: '1 1 auto', justifyContent: 'flex-end' }}
-            onClick={() => logoutUser()}
+          <Box
+            sx={{
+              display: 'flex',
+              flex: '1 1 auto',
+              alignItems: 'center',
+              justifyContent: 'flex-end'
+            }}
           >
-            <LogoutIcon sx={{ color: 'white' }} />
-          </Button>
+            <Typography variant="h7" noWrap component="div">
+              Usuario: {userName}
+            </Typography>
+            <Button onClick={() => logoutUser()}>
+              <LogoutIcon sx={{ color: 'white' }} />
+            </Button>
+          </Box>
         </Toolbar>
       </AppBar>
-      <Box component="nav" sx={navbarStyles.nav}>
+      <Box
+        component="nav"
+        sx={{
+          width: { md: drawerWidth },
+          flexShrink: { sm: 0 },
+          height: '100vh'
+        }}
+      >
         <Drawer
           variant="temporary"
           open={isOpen}

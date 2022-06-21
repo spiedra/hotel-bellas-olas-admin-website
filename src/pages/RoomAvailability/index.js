@@ -27,9 +27,13 @@ const columns = [
   }
 ]
 
+const dataHeaderPDF = [
+  ['Nombre de habitación', 'Número', 'Categoría', 'Costo']
+]
+
 const RoomAvailability = () => {
   const [roomList, setRoomList] = useState()
-  const dataHeaderPDF = [['Nombre de habitación', 'Número', 'Categoría', 'Costo']]
+
   const {
     control,
     handleSubmit,
@@ -54,12 +58,17 @@ const RoomAvailability = () => {
 
   const exportPDF = () => {
     if (roomList != null) {
-      const data = roomList.map((room) =>
-        ([room.roomName, room.number, room.roomCategory, room.cost]))
-      exportToPdf(dataHeaderPDF, data, 'Disponibilidad del hotel - ' + moment().format('DD/MM/YYYY'),
-        [
-          'Hotel Bellas Olas'
-        ]
+      const data = roomList.map((room) => [
+        room.roomName,
+        room.number,
+        room.roomCategory,
+        room.cost
+      ])
+      exportToPdf(
+        dataHeaderPDF,
+        data,
+        'Disponibilidad del hotel - ' + moment().format('DD/MM/YYYY'),
+        ['Hotel Bellas Olas']
       )
     }
   }
@@ -67,17 +76,16 @@ const RoomAvailability = () => {
   return (
     <>
       <Box>
-        <Box component="h1" sx={{ fontSize: { xs: '1.5rem', md: '2rem' } }}>
+        <Box component="h1" sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, mb: '.8rem' }}>
           Disponibilidad de Habitaciones
         </Box>
-        <DownloadButton onClick={exportPDF}/>
+        <DownloadButton onClick={exportPDF} />
         <Box
           component="form"
-          mt="3rem"
           sx={{
             '& .MuiTextField-root': {
               my: 1,
-              width: { xs: '37ch', md: '41ch' }
+              width: { xs: '37ch', md: '40ch' }
             }
           }}
           autoComplete="off"
@@ -116,7 +124,7 @@ const RoomAvailability = () => {
                     sx={roomAvailabilityStyles.select}
                     {...field}
                     type="date"
-                    error={!!errors.departureDate}
+                    error={!!errors.DepartureDate}
                     label="Fecha de salida"
                     InputLabelProps={{ shrink: true }}
                   />
