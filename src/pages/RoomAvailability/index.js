@@ -8,6 +8,7 @@ import { getRoomAvailability } from '../../services/Posts/getRoomAvailability'
 import DownloadButton from '../../components/DownloadButton'
 import { exportToPdf } from '../../utils/exportData'
 import moment from 'moment'
+import Modal from '../../components/Modal'
 
 const columns = [
   { id: 'roomName', label: 'Nombre de habitación', minWidth: 170 },
@@ -33,6 +34,7 @@ const dataHeaderPDF = [
 
 const RoomAvailability = () => {
   const [roomList, setRoomList] = useState()
+  const [stateModal, setStateModal] = useState({ msg: '', isOpen: false })
 
   const {
     control,
@@ -52,7 +54,11 @@ const RoomAvailability = () => {
       DepartureDate: values.DepartureDate,
       RoomType: values.RoomType
     }).then((response) => {
-      setRoomList(response)
+      if (response) {
+        setRoomList(response)
+      } else {
+        setStateModal({ msg: 'El rango de las fechas no es válido', isOpen: true })
+      }
     })
   }
 
@@ -76,7 +82,10 @@ const RoomAvailability = () => {
   return (
     <>
       <Box>
-        <Box component="h1" sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, mb: '.8rem' }}>
+        <Box
+          component="h1"
+          sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, mb: '.8rem' }}
+        >
           Disponibilidad de Habitaciones
         </Box>
         <DownloadButton onClick={exportPDF} />
@@ -170,6 +179,14 @@ const RoomAvailability = () => {
         : (
             ''
           )}
+
+      <Modal
+        isOpen={stateModal.isOpen}
+        onClose={() => setStateModal({ isOpen: false })}
+        onSubmit={() => setStateModal({ isOpen: false })}
+        title={'Mensaje del sistema'}
+        content={stateModal.msg}
+      />
     </>
   )
 }

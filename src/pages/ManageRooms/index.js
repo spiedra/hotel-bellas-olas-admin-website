@@ -46,7 +46,6 @@ const ManageRooms = () => {
 
   const getAllRates = () => {
     GetRoomRates().then((response) => {
-      console.log(response)
       setRoomRates(response)
     })
   }
