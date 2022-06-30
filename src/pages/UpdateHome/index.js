@@ -112,7 +112,6 @@ const UpdateHome = () => {
                       type="text"
                       error={!!errors.homeText}
                       label="Texto de inicio"
-                      defaultValue={homeInfo ? homeInfo.homeText : ''}
                       multiline
                       rows={4}
                     />
@@ -125,16 +124,16 @@ const UpdateHome = () => {
                   name="image"
                   render={({ field: { ...field } }) => (
                     <TextField
-                    {...field}
-                    inputRef={fileInput}
-                    InputLabelProps={{ shrink: true }}
-                    autoFocus
-                    margin="dense"
-                    type="file"
-                    fullWidth
-                    error={!!errors.image}
-                    label="Subir una nueva imagen"
-                  />
+                      {...field}
+                      inputRef={fileInput}
+                      InputLabelProps={{ shrink: true }}
+                      autoFocus
+                      margin="dense"
+                      type="file"
+                      fullWidth
+                      error={!!errors.image}
+                      label="Subir una nueva imagen"
+                    />
                   )}
                 />
               </Grid>
