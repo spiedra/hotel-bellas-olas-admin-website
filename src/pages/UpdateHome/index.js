@@ -29,17 +29,29 @@ const UpdateHome = () => {
     handleSubmit,
     formState: { errors },
     reset
-  } = useForm()
+  } = useForm({
+    defaultValues: {
+      image: ''
+    }
+  })
 
-  useEffect(() => {
+  const fetchHomeInfo = () => {
     getHomeInfo().then((response) => {
       setHomeInfo(response)
     })
-  }, [modalInfo])
+  }
 
   useEffect(() => {
-    reset()
-  }, [modalInfo])
+    reset(homeInfo)
+  }, [homeInfo])
+
+  const onReset = () => {
+    reset(homeInfo)
+  }
+
+  useEffect(() => {
+    fetchHomeInfo()
+  }, [])
 
   const onSaveChanges = async (values) => {
     const formData = new FormData()
@@ -51,7 +63,7 @@ const UpdateHome = () => {
 
     const response = await editHomeInfo(formData)
     setModalInfo({ isOpen: true, msg: response })
-    setHomeInfo()
+    fetchHomeInfo()
   }
 
   return (
@@ -112,7 +124,6 @@ const UpdateHome = () => {
                       type="text"
                       error={!!errors.homeText}
                       label="Texto de inicio"
-                      defaultValue={homeInfo ? homeInfo.homeText : ''}
                       multiline
                       rows={4}
                     />
@@ -123,18 +134,21 @@ const UpdateHome = () => {
                 <Controller
                   control={control}
                   name="image"
-                  render={({ field: { ...field } }) => (
+                  render={({ field: { ref, ...field } }) => (
                     <TextField
-                    {...field}
-                    inputRef={fileInput}
-                    InputLabelProps={{ shrink: true }}
-                    autoFocus
-                    margin="dense"
-                    type="file"
-                    fullWidth
-                    error={!!errors.image}
-                    label="Subir una nueva imagen"
-                  />
+                      {...field}
+                      inputRef={(e) => {
+                        ref(e)
+                        fileInput.current = e
+                      }}
+                      InputLabelProps={{ shrink: true }}
+                      autoFocus
+                      margin="dense"
+                      type="file"
+                      fullWidth
+                      error={!!errors.image}
+                      label="Subir una nueva imagen"
+                    />
                   )}
                 />
               </Grid>
@@ -146,6 +160,14 @@ const UpdateHome = () => {
                   onClick={handleSubmit}
                 >
                   Aceptar
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ ml: '1rem' }}
+                  onClick={() => onReset()}
+                >
+                  Cancelar
                 </Button>
               </Grid>
             </Grid>

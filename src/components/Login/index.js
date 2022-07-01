@@ -40,16 +40,16 @@ export const Login = () => {
         Administración de Hotel Bellas Olas
       </Typography>
       <Box sx={LoginStyles.LoginContainer}>
-        <Box sx={LoginStyles.Login}>
+        <Box component="form" autoComplete="on" sx={LoginStyles.Login}>
           <TextField
             variant="standard"
             placeholder="Nombre de usuario"
             margin="normal"
             name="userName"
+            autoComplete="on"
             required
             sx={{ width: '100%' }}
             onChange={handleUserInputChange}
-            value={userInfo.userName}
           />
           <TextField
             variant="standard"
@@ -58,9 +58,9 @@ export const Login = () => {
             required
             name="password"
             type="password"
+            autoComplete="on"
             sx={{ width: '100%' }}
             onChange={handleUserInputChange}
-            value={userInfo.password}
           />
           <Button
             sx={LoginStyles.Button}

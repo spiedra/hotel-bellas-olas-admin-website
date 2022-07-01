@@ -31,7 +31,8 @@ const UpdateFeatures = () => {
   const [currentFeature, setCurrentFeature] = useState()
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [stateModal, setStateModal] = useState({ msg: '', isOpen: false })
+  const [isModalResponseOpen, setIsModalResponseOpen] = useState(false)
+  const [modalMessage, setModalMessage] = useState()
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const fileInput = useRef()
   const {
@@ -39,7 +40,9 @@ const UpdateFeatures = () => {
     handleSubmit,
     formState: { errors },
     reset
-  } = useForm()
+  } = useForm({
+    defaultValues: { FeatureImage: '' }
+  })
 
   useEffect(() => {
     reset()
@@ -62,7 +65,8 @@ const UpdateFeatures = () => {
 
     addFeature(formData).then((response) => {
       setIsAddModalOpen(false)
-      setStateModal({ msg: response, isOpen: true })
+      setIsModalResponseOpen(true)
+      setModalMessage(response)
       getAllFeatures()
     })
   }
@@ -77,15 +81,17 @@ const UpdateFeatures = () => {
     }
 
     const response = await editFeature(formData)
-    setStateModal({ isOpen: true, msg: response })
+    setIsModalResponseOpen(true)
+    setModalMessage(response)
     setIsEditModalOpen(false)
     getAllFeatures()
   }
 
   const onDelete = async () => {
-    const response = await deleteFeature(currentFeature.id)
+    const response = await deleteFeature(currentFeature)
     setIsDeleteModalOpen(false)
-    setStateModal({ msg: response, isOpen: true })
+    setIsModalResponseOpen(true)
+    setModalMessage(response)
     getAllFeatures()
   }
 
@@ -214,7 +220,6 @@ const UpdateFeatures = () => {
                       type="text"
                       error={!!errors.FeatureDescription}
                       label="Facilidad"
-                      defaultValue={currentFeature.feature}
                       multiline
                       rows={4}
                     />
@@ -291,18 +296,18 @@ const UpdateFeatures = () => {
         content={editModalBody}
       />
       <Modal
-        isOpen={stateModal.isOpen}
-        onClose={() => setStateModal({ isOpen: false })}
-        onSubmit={() => setStateModal({ isOpen: false })}
+        isOpen={isModalResponseOpen}
+        onClose={() => setIsModalResponseOpen(false)}
+        onSubmit={() => setIsModalResponseOpen(false)}
         title={'Mensaje del sistema'}
-        content={stateModal.msg}
+        content={modalMessage}
       />
       <Modal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
-        title={'Eliminar Temporada'}
+        title={'Eliminar Facilidad'}
         onSubmit={onDelete}
-        content="¿Está seguro de eliminar esta temporada?"
+        content="¿Está seguro de eliminar esta facilidad?"
       />
     </>
   )

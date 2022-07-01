@@ -23,7 +23,8 @@ const ManageGallery = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [stateModal, setStateModal] = useState({ msg: '', isOpen: false })
+  const [isModalResponseOpen, setIsModalResponseOpen] = useState(false)
+  const [modalMessage, setModalMessage] = useState()
   const fileInput = useRef()
   const {
     control,
@@ -66,7 +67,8 @@ const ManageGallery = () => {
 
     addGalleryImage(formData).then((response) => {
       setIsAddModalOpen(false)
-      setStateModal({ msg: response, isOpen: true })
+      setIsModalResponseOpen(true)
+      setModalMessage(response)
       fetchAboutUsInfo()
     })
   }
@@ -78,14 +80,16 @@ const ManageGallery = () => {
 
     const response = await EditGalleryImage(formData)
     setIsEditModalOpen(false)
-    setStateModal({ msg: response, isOpen: true })
+    setIsModalResponseOpen(true)
+    setModalMessage(response)
     fetchAboutUsInfo()
   }
 
   const onDelete = async () => {
     const response = await DeleteImageGallery(currentImage)
     setIsDeleteModalOpen(false)
-    setStateModal({ msg: response, isOpen: true })
+    setIsModalResponseOpen(true)
+    setModalMessage(response)
     fetchAboutUsInfo()
   }
 
@@ -239,11 +243,11 @@ const ManageGallery = () => {
         content={editModalBody}
       />
       <Modal
-        isOpen={stateModal.isOpen}
-        onClose={() => setStateModal({ isOpen: false })}
-        onSubmit={() => setStateModal({ isOpen: false })}
+        isOpen={isModalResponseOpen}
+        onClose={() => setIsModalResponseOpen(false)}
+        onSubmit={() => setIsModalResponseOpen(false)}
         title={'Mensaje del sistema'}
-        content={stateModal.msg}
+        content={modalMessage}
       />
       <Modal
         isOpen={isDeleteModalOpen}
