@@ -29,17 +29,29 @@ const UpdateHome = () => {
     handleSubmit,
     formState: { errors },
     reset
-  } = useForm()
+  } = useForm({
+    defaultValues: {
+      image: ''
+    }
+  })
 
-  useEffect(() => {
+  const fetchHomeInfo = () => {
     getHomeInfo().then((response) => {
       setHomeInfo(response)
     })
-  }, [modalInfo])
+  }
 
   useEffect(() => {
-    reset()
-  }, [modalInfo])
+    reset(homeInfo)
+  }, [homeInfo])
+
+  const onReset = () => {
+    reset(homeInfo)
+  }
+
+  useEffect(() => {
+    fetchHomeInfo()
+  }, [])
 
   const onSaveChanges = async (values) => {
     const formData = new FormData()
@@ -51,7 +63,7 @@ const UpdateHome = () => {
 
     const response = await editHomeInfo(formData)
     setModalInfo({ isOpen: true, msg: response })
-    setHomeInfo()
+    fetchHomeInfo()
   }
 
   return (
@@ -122,10 +134,13 @@ const UpdateHome = () => {
                 <Controller
                   control={control}
                   name="image"
-                  render={({ field: { ...field } }) => (
+                  render={({ field: { ref, ...field } }) => (
                     <TextField
                       {...field}
-                      inputRef={fileInput}
+                      inputRef={(e) => {
+                        ref(e)
+                        fileInput.current = e
+                      }}
                       InputLabelProps={{ shrink: true }}
                       autoFocus
                       margin="dense"
@@ -145,6 +160,14 @@ const UpdateHome = () => {
                   onClick={handleSubmit}
                 >
                   Aceptar
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ ml: '1rem' }}
+                  onClick={() => onReset()}
+                >
+                  Cancelar
                 </Button>
               </Grid>
             </Grid>
