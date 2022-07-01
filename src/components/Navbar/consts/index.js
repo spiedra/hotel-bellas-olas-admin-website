@@ -31,8 +31,8 @@ export const navbarItems = [
   {
     id: 3,
     icon: <RoomPreferencesIcon />,
-    label: 'Administrar habitaciones',
-    route: 'manage-rooms'
+    label: 'Administrar categoría de habitaciones',
+    route: 'manage-rooms-category'
   },
   {
     id: 4,

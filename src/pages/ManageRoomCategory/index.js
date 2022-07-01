@@ -17,7 +17,7 @@ import { LoaderSpinner } from '../../components/Loader'
 
 const columns = [
   { id: 'id', label: 'ID', minWidth: 50 },
-  { id: 'category', label: 'Categoria', maxWidth: 400 },
+  { id: 'category', label: 'Categoría', maxWidth: 400 },
   { id: 'description', label: 'Descripción', maxWidth: 400 },
   { id: 'cost', label: 'Costo(₡)', maxWidth: 400 },
   {
@@ -29,7 +29,7 @@ const columns = [
   }
 ]
 
-const ManageRooms = () => {
+const ManageRoomCategory = () => {
   const [roomRates, setRoomRates] = useState()
   const [currentRoom, setCurrentRoom] = useState()
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
@@ -354,7 +354,7 @@ const ManageRooms = () => {
         component="h1"
         sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, mb: '.8rem' }}
       >
-        Administración de Habitaciones
+        Administración | Categoría de Habitaciones
       </Box>
       {roomRates
         ? (
@@ -408,4 +408,4 @@ const ManageRooms = () => {
   )
 }
 
-export default ManageRooms
+export default ManageRoomCategory

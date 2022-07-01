@@ -231,7 +231,7 @@ const ManageSeason = () => {
         component="h1"
         sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, mb: '.8rem' }}
       >
-        Administración de Temporadas
+        Administración | Temporadas
       </Box>
       {seasons
         ? (
