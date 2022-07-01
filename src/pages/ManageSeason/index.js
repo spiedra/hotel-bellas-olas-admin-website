@@ -58,7 +58,7 @@ const ManageSeason = () => {
     formData.append('PercentApply', values.percent)
 
     addSeason(formData).then((response) => {
-      setResponse(response)
+      setResponse('Temporada agregada con éxito')
       setIsAddModalOpen(false)
       setIsModalResponseOpen(true)
       getAllSeasons()
@@ -98,8 +98,10 @@ const ManageSeason = () => {
   }
 
   const onDelete = async () => {
-    await DeleteSeason(currentSeason.id)
+    const response = await DeleteSeason(currentSeason.id)
+    setResponse(response)
     setIsDeleteModalOpen(false)
+    setIsModalResponseOpen(true)
     getAllSeasons()
   }
 
@@ -269,7 +271,7 @@ const ManageSeason = () => {
         onClose={() => setIsDeleteModalOpen(false)}
         title={'Eliminar Temporada'}
         onSubmit={onDelete}
-        content="¿Está seguro de eliminar esta facilidad?"
+        content="¿Está seguro de eliminar esta temporada?"
       />
 
       <Modal

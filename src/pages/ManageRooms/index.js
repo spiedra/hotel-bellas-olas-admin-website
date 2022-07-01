@@ -34,7 +34,8 @@ const ManageRooms = () => {
   const [currentRoom, setCurrentRoom] = useState()
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [stateModal, setStateModal] = useState({ msg: '', isOpen: false })
+  const [isModalResponseOpen, setIsModalResponseOpen] = useState(false)
+  const [modalMessage, setModalMessage] = useState()
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const fileInput = useRef()
   const {
@@ -59,7 +60,8 @@ const ManageRooms = () => {
 
     addRoomRate(formData).then((response) => {
       setIsAddModalOpen(false)
-      setStateModal({ msg: response, isOpen: true })
+      setModalMessage(response)
+      setIsModalResponseOpen(true)
       getAllRates()
     })
   }
@@ -77,7 +79,8 @@ const ManageRooms = () => {
 
     const response = await EditRoomRate(formData)
     setIsEditModalOpen(false)
-    setStateModal({ isOpen: true, msg: response })
+    setModalMessage(response)
+    setIsModalResponseOpen(true)
     getAllRates()
   }
 
@@ -98,7 +101,8 @@ const ManageRooms = () => {
   const onDelete = async () => {
     const response = await deleteRoom(currentRoom)
     setIsDeleteModalOpen(false)
-    setStateModal({ msg: response, isOpen: true })
+    setModalMessage(response)
+    setIsModalResponseOpen(true)
     getAllRates()
   }
 
@@ -129,6 +133,7 @@ const ManageRooms = () => {
             control={control}
             name="RoomCategory"
             rules={{ required: true, min: 1 }}
+            defaultValue=''
             render={({ field: { ref, ...field } }) => (
               <TextField
                 {...field}
@@ -149,6 +154,7 @@ const ManageRooms = () => {
             control={control}
             name="RoomCost"
             rules={{ required: true }}
+            defaultValue=''
             render={({ field: { ref, ...field } }) => (
               <TextField
                 {...field}
@@ -169,6 +175,7 @@ const ManageRooms = () => {
             control={control}
             name="RoomDescription"
             rules={{ required: true }}
+            defaultValue=''
             render={({ field: { ...field } }) => (
               <TextField
                 {...field}
@@ -190,6 +197,7 @@ const ManageRooms = () => {
             control={control}
             name="image"
             rules={{ required: true }}
+            defaultValue=''
             render={({ field: { ref, ...field } }) => (
               <TextField
                 {...field}
@@ -264,7 +272,6 @@ const ManageRooms = () => {
                       margin="dense"
                       type="text"
                       fullWidth
-                      defaultValue={currentRoom.category}
                       error={!!errors.RoomCategory}
                       label="Categoría"
                     />
@@ -285,7 +292,6 @@ const ManageRooms = () => {
                       margin="dense"
                       type="number"
                       fullWidth
-                      defaultValue={currentRoom.cost}
                       error={!!errors.RoomCost}
                       label="Costo"
                     />
@@ -307,7 +313,6 @@ const ManageRooms = () => {
                       margin="dense"
                       rows={4}
                       error={!!errors.RoomDescription}
-                      defaultValue={currentRoom.description}
                       type="text"
                       label="Descripción"
                     />
@@ -377,13 +382,13 @@ const ManageRooms = () => {
         content={addModalBody}
       />
       <Modal
-        isOpen={stateModal.isOpen}
-        onClose={() => setStateModal({ isOpen: false })}
-        onSubmit={() => setStateModal({ isOpen: false })}
+        isOpen={isModalResponseOpen}
+        onClose={() => setIsModalResponseOpen(false)}
+        onSubmit={() => setIsModalResponseOpen(false)}
         title={'Mensaje del sistema'}
-        content={stateModal.msg}
+        content={modalMessage}
       />
-       <Modal
+      <Modal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         title={'Eliminar Habitación'}
@@ -395,7 +400,7 @@ const ManageRooms = () => {
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         maxWidth="lg"
-        idForm='edit_form'
+        idForm="edit_form"
         title={'Modificar Habitación'}
         content={editModalBody}
       />
