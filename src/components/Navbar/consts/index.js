@@ -9,6 +9,7 @@ import EventAvailableIcon from '@mui/icons-material/EventAvailable'
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
 import ThunderstormIcon from '@mui/icons-material/Thunderstorm'
 import BedroomChildIcon from '@mui/icons-material/BedroomChild'
+import LocalOfferIcon from '@mui/icons-material/LocalOffer'
 
 export const navbarItems = [
   {
@@ -62,7 +63,7 @@ export const navbarItems = [
   },
   {
     id: 8,
-    icon: <ThunderstormIcon />,
+    icon: <LocalOfferIcon />,
     label: 'Administración de ofertas',
     route: 'offers'
   },

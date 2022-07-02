@@ -32,7 +32,13 @@ const ManageOffer = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [isModalResponseOpen, setIsModalResponseOpen] = useState(false)
   const [response, setResponse] = useState()
-  const [currentOffer, setCurrentOffer] = useState({ name: 0, description: '', startDate: '', endDate: '', percent: 0 })
+  const [currentOffer, setCurrentOffer] = useState({
+    name: 0,
+    description: '',
+    startDate: '',
+    endDate: '',
+    percent: 0
+  })
 
   const {
     control,
@@ -169,45 +175,45 @@ const ManageOffer = () => {
           />
         </Grid>
         <Grid item>
-            <Controller
-              control={control}
-              name="startDate"
-              rules={{ required: true }}
-              render={({ field: { ...field } }) => (
-                <TextField
-                  {...field}
-                  type="date"
-                  error={!!errors.startDate}
-                  label="Fecha Inicial"
-                  deafaultValues=""
-                  fullWidth
-                  variant="standard"
-                  margin="dense"
-                  InputLabelProps={{ shrink: true }}
-                ></TextField>
-              )}
-            />
-          </Grid>
-          <Grid item>
-            <Controller
-              control={control}
-              name="endDate"
-              rules={{ required: true }}
-              render={({ field: { ...field } }) => (
-                <TextField
-                  {...field}
-                  type="date"
-                  error={!!errors.endDate}
-                  label="Fecha Final"
-                  deafaultValues=""
-                  fullWidth
-                  variant="standard"
-                  margin="dense"
-                  InputLabelProps={{ shrink: true }}
-                ></TextField>
-              )}
-            />
-          </Grid>
+          <Controller
+            control={control}
+            name="startDate"
+            rules={{ required: true }}
+            render={({ field: { ...field } }) => (
+              <TextField
+                {...field}
+                type="date"
+                error={!!errors.startDate}
+                label="Fecha Inicial"
+                deafaultValues=""
+                fullWidth
+                variant="standard"
+                margin="dense"
+                InputLabelProps={{ shrink: true }}
+              ></TextField>
+            )}
+          />
+        </Grid>
+        <Grid item>
+          <Controller
+            control={control}
+            name="endDate"
+            rules={{ required: true }}
+            render={({ field: { ...field } }) => (
+              <TextField
+                {...field}
+                type="date"
+                error={!!errors.endDate}
+                label="Fecha Final"
+                deafaultValues=""
+                fullWidth
+                variant="standard"
+                margin="dense"
+                InputLabelProps={{ shrink: true }}
+              ></TextField>
+            )}
+          />
+        </Grid>
         <Grid item>
           <Controller
             control={control}
@@ -240,7 +246,7 @@ const ManageOffer = () => {
       onSubmit={handleSubmit(onEdit)}
       autoComplete="off"
     >
-      {console.log(currentOffer) }
+      {console.log(currentOffer)}
       <Grid
         container
         justifyContent="flex-start"
@@ -291,45 +297,45 @@ const ManageOffer = () => {
           />
         </Grid>
         <Grid item>
-            <Controller
-              control={control}
-              name="startDate"
-              defaultValue={currentOffer.startDate}
-              rules={{ required: true }}
-              render={({ field: { ...field } }) => (
-                <TextField
-                  {...field}
-                  type="date"
-                  error={!!errors.startDate}
-                  fullWidth
-                  variant="standard"
-                  margin="dense"
-                  label="Fecha Inicial"
-                  InputLabelProps={{ shrink: true }}
-                ></TextField>
-              )}
-            />
-          </Grid>
-          <Grid item>
-            <Controller
-              control={control}
-              name="endDate"
-              defaultValue={currentOffer.endDate}
-              rules={{ required: true }}
-              render={({ field: { ...field } }) => (
-                <TextField
-                  {...field}
-                  type="date"
-                  error={!!errors.endDate}
-                  label="Fecha Final"
-                  fullWidth
-                  variant="standard"
-                  margin="dense"
-                  InputLabelProps={{ shrink: true }}
-                ></TextField>
-              )}
-            />
-          </Grid>
+          <Controller
+            control={control}
+            name="startDate"
+            defaultValue={currentOffer.startDate}
+            rules={{ required: true }}
+            render={({ field: { ...field } }) => (
+              <TextField
+                {...field}
+                type="date"
+                error={!!errors.startDate}
+                fullWidth
+                variant="standard"
+                margin="dense"
+                label="Fecha Inicial"
+                InputLabelProps={{ shrink: true }}
+              ></TextField>
+            )}
+          />
+        </Grid>
+        <Grid item>
+          <Controller
+            control={control}
+            name="endDate"
+            defaultValue={currentOffer.endDate}
+            rules={{ required: true }}
+            render={({ field: { ...field } }) => (
+              <TextField
+                {...field}
+                type="date"
+                error={!!errors.endDate}
+                label="Fecha Final"
+                fullWidth
+                variant="standard"
+                margin="dense"
+                InputLabelProps={{ shrink: true }}
+              ></TextField>
+            )}
+          />
+        </Grid>
         <Grid item>
           <Controller
             control={control}
@@ -361,7 +367,7 @@ const ManageOffer = () => {
         component="h1"
         sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, mb: '.8rem' }}
       >
-        Administración de Ofertas
+        Administración | Ofertas
       </Box>
       {offers
         ? (
