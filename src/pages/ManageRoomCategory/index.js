@@ -8,7 +8,7 @@ import Modal from '../../components/Modal'
 import CustomizedTable from '../../components/Table'
 import AddButton from '../../components/AddButton'
 
-import { deleteRoom } from '../../services/Deletes/deleteRoom'
+import { deleteRoomCategory } from '../../services/Deletes/deleteRoomCategory'
 import { EditRoomRate } from '../../services/Puts/EditRoomRate'
 import { GetRoomRates } from '../../services/Gets/getRoomRate'
 import { addRoomRate } from '../../services/Posts/addRoomRate'
@@ -99,7 +99,7 @@ const ManageRoomCategory = () => {
   }
 
   const onDelete = async () => {
-    const response = await deleteRoom(currentRoom)
+    const response = await deleteRoomCategory(currentRoom)
     setIsDeleteModalOpen(false)
     setModalMessage(response)
     setIsModalResponseOpen(true)
@@ -377,7 +377,7 @@ const ManageRoomCategory = () => {
       <Modal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        title={'Insertar Habitación'}
+        title={'Insertar Cateogoría de Habitación'}
         idForm="add_form"
         content={addModalBody}
       />
@@ -391,9 +391,9 @@ const ManageRoomCategory = () => {
       <Modal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
-        title={'Eliminar Habitación'}
+        title={'Eliminar Cateogoría de Habitación'}
         onSubmit={onDelete}
-        content="¿Está seguro de eliminar esta habitación?"
+        content="¿Está seguro de eliminar esta categoría?"
       />
 
       <Modal
@@ -401,7 +401,7 @@ const ManageRoomCategory = () => {
         onClose={() => setIsEditModalOpen(false)}
         maxWidth="lg"
         idForm="edit_form"
-        title={'Modificar Habitación'}
+        title={'Modificar Cateogoría de Habitación'}
         content={editModalBody}
       />
     </>

@@ -8,6 +8,7 @@ import FactCheckIcon from '@mui/icons-material/FactCheck'
 import EventAvailableIcon from '@mui/icons-material/EventAvailable'
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
 import ThunderstormIcon from '@mui/icons-material/Thunderstorm'
+import BedroomChildIcon from '@mui/icons-material/BedroomChild'
 
 export const navbarItems = [
   {
@@ -19,7 +20,7 @@ export const navbarItems = [
   {
     id: 1,
     icon: <EditIcon />,
-    label: 'Modificar Paginas',
+    label: 'Administración de Paginas',
     route: 'update-pages'
   },
   {
@@ -31,31 +32,38 @@ export const navbarItems = [
   {
     id: 3,
     icon: <RoomPreferencesIcon />,
-    label: 'Administrar categoría de habitaciones',
+    label: 'Administración de Categoría de Habitaciones',
     route: 'manage-rooms-category'
   },
   {
     id: 4,
+    icon: <BedroomChildIcon />,
+    label: 'Administración de Habitaciones',
+    route: 'manage-rooms'
+  },
+  {
+    id: 5,
     icon: <FactCheckIcon />,
     label: 'Estado del hotel hoy',
     route: 'hotel-status'
   },
   {
-    id: 5,
+    id: 6,
     icon: <EventAvailableIcon />,
     label: 'Disponibilidad de habitaciones',
     route: 'room-availability'
   },
+
   {
-    id: 6,
+    id: 7,
     icon: <ThunderstormIcon />,
-    label: 'Administración de temporadas',
+    label: 'Administración de Temporadas',
     route: 'seasons'
   },
   {
-    id: 7,
+    id: 8,
     icon: <AddPhotoAlternateIcon />,
-    label: 'Publicidad',
+    label: 'Administración de Publicidad',
     route: 'advertising'
   }
 ]
