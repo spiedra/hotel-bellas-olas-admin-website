@@ -58,7 +58,7 @@ const ManageSeason = () => {
     formData.append('PercentApply', values.percent)
 
     addSeason(formData).then((response) => {
-      setResponse(response)
+      setResponse('Temporada agregada con éxito')
       setIsAddModalOpen(false)
       setIsModalResponseOpen(true)
       getAllSeasons()
@@ -98,8 +98,10 @@ const ManageSeason = () => {
   }
 
   const onDelete = async () => {
-    await DeleteSeason(currentSeason.id)
+    const response = await DeleteSeason(currentSeason.id)
+    setResponse(response)
     setIsDeleteModalOpen(false)
+    setIsModalResponseOpen(true)
     getAllSeasons()
   }
 
@@ -122,6 +124,7 @@ const ManageSeason = () => {
             control={control}
             name="type"
             rules={{ required: true }}
+            defaultValue=""
             render={({ field: { ref, ...field } }) => (
               <TextField
                 {...field}
@@ -141,6 +144,7 @@ const ManageSeason = () => {
           <Controller
             control={control}
             name="percent"
+            defaultValue=""
             rules={{ required: true }}
             render={({ field: { ref, ...field } }) => (
               <TextField
@@ -189,7 +193,6 @@ const ManageSeason = () => {
                 margin="dense"
                 type="text"
                 fullWidth
-                defaultValue={currentSeason.type}
                 variant="standard"
                 error={!!errors.type}
                 label="Tipo de temporada"
@@ -211,7 +214,6 @@ const ManageSeason = () => {
                 margin="dense"
                 type="number"
                 fullWidth
-                defaultValue={currentSeason.percent}
                 variant="standard"
                 error={!!errors.percent}
                 label="Porcentaje a aplicar"
@@ -229,7 +231,7 @@ const ManageSeason = () => {
         component="h1"
         sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, mb: '.8rem' }}
       >
-        Administración de Temporadas
+        Administración | Temporadas
       </Box>
       {seasons
         ? (

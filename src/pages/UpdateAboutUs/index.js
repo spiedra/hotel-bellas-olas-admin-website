@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
+import { Controller, useForm } from 'react-hook-form'
 
 import { Button, Box, TextField, Grid } from '@mui/material'
-
 import EditIcon from '@mui/icons-material/Edit'
-
-import { Controller, useForm } from 'react-hook-form'
 
 import { LoaderSpinner } from '../../components/Loader'
 import Modal from '../../components/Modal'
@@ -16,29 +14,34 @@ import { getAboutUsInfo } from '../../services/Gets/getAboutUsInfo'
 
 const UpdateAboutUs = () => {
   const [aboutUsInfo, setAboutUsInfo] = useState()
-  const [stateModal, setStateModal] = useState({ msg: '', isOpen: false })
+  const [isModalResponseOpen, setIsModalResponseOpen] = useState(false)
+  const [modalMessage, setModalMessage] = useState()
   const navigate = useNavigate()
   const {
     control,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    reset
   } = useForm()
 
   const fetchAboutUsInfo = () => {
     getAboutUsInfo().then((response) => {
-      setAboutUsInfo(response.aboutUsText)
+      setAboutUsInfo(response)
     })
   }
+
   useEffect(() => {
     fetchAboutUsInfo()
   }, [])
 
   const onSaveAboutUsText = async (values) => {
     const formData = new FormData()
-    formData.append('AboutUsText', values.AboutUsText)
+    formData.append('AboutUsText', values.aboutUsText)
 
     const response = await EditAboutUsText(formData)
-    setStateModal({ msg: response, isOpen: true })
+    setModalMessage(response)
+    setIsModalResponseOpen(true)
+    fetchAboutUsInfo()
   }
 
   return (
@@ -80,21 +83,19 @@ const UpdateAboutUs = () => {
               <Grid item>
                 <Controller
                   control={control}
-                  name="AboutUsText"
+                  name="aboutUsText"
                   rules={{ required: true, min: 1 }}
-                  defaultValue={aboutUsInfo}
-                  render={({ field: { ref, value, ...field } }) => (
+                  defaultValue={aboutUsInfo.aboutUsText}
+                  render={({ field: { ...field } }) => (
                     <TextField
                       {...field}
-                      inputRef={ref}
                       autoFocus
-                      defaultValue={aboutUsInfo}
                       margin="dense"
                       type="text"
                       multiline
                       InputLabelProps={{ shrink: true }}
                       row={10}
-                      error={!!errors.AboutUsText}
+                      error={!!errors.aboutUsText}
                       fullWidth
                       label="Texto sobre nosotros"
                     />
@@ -110,6 +111,14 @@ const UpdateAboutUs = () => {
             >
               Aceptar
             </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ mt: '.8rem', ml: '1rem' }}
+              onClick={() => reset(aboutUsInfo)}
+            >
+              Cancelar
+            </Button>
           </Box>
         </>
           )
@@ -118,11 +127,11 @@ const UpdateAboutUs = () => {
           )}
 
       <Modal
-        isOpen={stateModal.isOpen}
-        onClose={() => setStateModal({ isOpen: false })}
-        onSubmit={() => setStateModal({ isOpen: false })}
+        isOpen={isModalResponseOpen}
+        onClose={() => setIsModalResponseOpen(false)}
+        onSubmit={() => setIsModalResponseOpen(false)}
         title={'Mensaje del sistema'}
-        content={stateModal.msg}
+        content={modalMessage}
       />
     </>
   )

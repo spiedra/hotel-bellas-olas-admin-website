@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Moment from 'react-moment'
-// import { LoaderSpinner } from '../../components/Loader'
 import CustomizedTable from '../../components/Table'
 import { getHotelStatus } from '../../services/Gets/getHotelStatus'
 import DownloadButton from '../../components/DownloadButton'
@@ -10,20 +9,18 @@ import { Box } from '@mui/material'
 import { LoaderSpinner } from '../../components/Loader'
 
 const columns = [
-  { id: 'roomName', label: 'Nombre de habitación', minWidth: 170 },
-  { id: 'number', label: 'Número', minWidth: 100 },
+  { id: 'number', label: 'Número', minWidth: 10 },
+  { id: 'roomName', label: 'Nombre de habitación', minWidth: 300 },
   {
     id: 'roomCategory',
     label: 'Categoría',
-    minWidth: 170,
-    align: 'right',
+    minWidth: 300,
     format: (value) => value.toLocaleString('en-US')
   },
   {
     id: 'lastDate',
-    label: 'Último acceso',
-    minWidth: 170,
-    align: 'right',
+    label: 'Estado',
+    minWidth: 300,
     format: (value) => value.toLocaleString('en-US')
   }
 ]
@@ -31,7 +28,7 @@ const columns = [
 const HotelStatus = () => {
   const [roomList, setRoomList] = useState()
   const dataHeaderPDF = [
-    ['Nombre de habitación', 'Número', 'Categoría', 'Ultimo ingreso']
+    ['Nombre de habitación', 'Número', 'Categoría', 'Estado']
   ]
 
   useEffect(() => {

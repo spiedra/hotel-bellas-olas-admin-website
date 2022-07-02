@@ -25,8 +25,9 @@ import UpdateContactUs from './pages/UpdateContactUs'
 import Login from './components/Login'
 import AuthState from './components/Authentication/AuthState'
 import ProtectedRoutes from './components/Authentication/ProtectedRoutes'
-import ManageRooms from './pages/ManageRooms'
 import ManageGallery from './pages/ManageGallery'
+import ManageRoomCategory from './pages/ManageRoomCategory'
+import ManageRoom from './pages/ManageRooms'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -42,7 +43,8 @@ root.render(
                 <Route path="home" element={<Home />} />
                 <Route path="update-pages" element={<UpdatePages />} />
                 <Route path="reservation-list" element={<ReservationList />} />
-                <Route path="manage-rooms" element={<ManageRooms />} />
+                <Route path="manage-rooms-category" element={<ManageRoomCategory />} />
+                <Route path="manage-rooms" element={<ManageRoom />} />
                 <Route path="hotel-status" element={<HotelStatus />} />
                 <Route path="update-home" element={<UpdateHome />} />
                 <Route path="update-features" element={<UpdateFeatures />} />
