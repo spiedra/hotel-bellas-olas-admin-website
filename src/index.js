@@ -17,6 +17,7 @@ import UpdatePages from './pages/UpdatePages'
 import UpdateHome from './pages/UpdateHome'
 import Home from './pages/Home'
 import ManageSeason from './pages/ManageSeason'
+import ManageOffer from './pages/ManageOffer'
 import UpdateFeatures from './pages/UpdateFeatures'
 import UpdateAboutUs from './pages/UpdateAboutUs'
 import UpdateContactUs from './pages/UpdateContactUs'
@@ -53,6 +54,7 @@ root.render(
                   element={<RoomAvailability />}
                 />
                 <Route path="seasons" element={<ManageSeason />} />
+                <Route path="offers" element={<ManageOffer />} />
                 <Route path="advertising" element={<Advertising />} />
                 <Route path="*" element={<NotFound />} />
               </Route>

@@ -269,7 +269,7 @@ const ManageSeason = () => {
         onClose={() => setIsDeleteModalOpen(false)}
         title={'Eliminar Temporada'}
         onSubmit={onDelete}
-        content="¿Está seguro de eliminar esta facilidad?"
+        content="¿Está seguro de eliminar esta temporada?"
       />
 
       <Modal

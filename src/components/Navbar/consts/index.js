@@ -54,6 +54,12 @@ export const navbarItems = [
   },
   {
     id: 7,
+    icon: <ThunderstormIcon />,
+    label: 'Administración de ofertas',
+    route: 'offers'
+  },
+  {
+    id: 8,
     icon: <AddPhotoAlternateIcon />,
     label: 'Publicidad',
     route: 'advertising'
