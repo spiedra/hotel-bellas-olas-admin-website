@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Box, Button, Grid, MenuItem, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import { roomAvailabilityStyles } from './styles'
