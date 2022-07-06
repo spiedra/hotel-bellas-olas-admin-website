@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import { getSeasons } from '../../services/Gets/getSeasons'
 import CustomizedTable from '../../components/Table'
 import AddButton from '../../components/AddButton'
 import Modal from '../../components/Modal'
-import { Box, Grid, TextField } from '@mui/material'
+import { Box, Grid, MenuItem, TextField } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import { addSeason } from '../../services/Posts/addSeason'
 import { DeleteSeason } from '../../services/Deletes/deleteSeason'
@@ -11,7 +12,7 @@ import { LoaderSpinner } from '../../components/Loader'
 import { editSeason } from '../../services/Puts/editSeason'
 
 const columns = [
-  { id: 'id', label: 'ID', minWidth: 170 },
+  { id: 'id', label: 'ID', minWidth: 1 },
   { id: 'type', label: 'Tipo', minWidth: 100 },
   {
     id: 'percent',
@@ -19,6 +20,12 @@ const columns = [
     minWidth: 170,
     align: 'right',
     format: (value) => value.toLocaleString('en-US')
+  },
+  {
+    id: 'isActive',
+    label: 'Estado',
+    minWidth: 170,
+    align: 'right'
   }
 ]
 
@@ -56,9 +63,10 @@ const ManageSeason = () => {
     const formData = new FormData()
     formData.append('type', values.type)
     formData.append('PercentApply', values.percent)
+    formData.append('IsActive', (values.isActive === 'Activa'))
 
     addSeason(formData).then((response) => {
-      setResponse('Temporada agregada con éxito')
+      setResponse(response)
       setIsAddModalOpen(false)
       setIsModalResponseOpen(true)
       getAllSeasons()
@@ -68,8 +76,10 @@ const ManageSeason = () => {
   const onEdit = (values) => {
     const formData = new FormData()
     formData.append('SeasonId', currentSeason.id)
-    formData.append('Type', values.type || currentSeason.type)
-    formData.append('PercentApply', values.percent || currentSeason.percent)
+    formData.append('Type', values.type)
+    formData.append('PercentApply', values.percent)
+    formData.append('IsDeleted', false)
+    formData.append('IsActive', (values.isActive === 'Activa'))
 
     editSeason(formData).then((response) => {
       setResponse(response)
@@ -161,6 +171,28 @@ const ManageSeason = () => {
             )}
           />
         </Grid>
+        <Grid item>
+          <Controller
+            control={control}
+            name="isActive"
+            rules={{ required: true }}
+            defaultValue=""
+            render={({ field: { ...field } }) => (
+              <TextField
+                {...field}
+                select
+                fullWidth
+                variant="standard"
+                margin="dense"
+                error={!!errors.isActive}
+                label="Estado"
+              >
+                <MenuItem value="Activa">Activa</MenuItem>
+                <MenuItem value="Desactiva">Desactiva</MenuItem>
+              </TextField>
+            )}
+          />
+        </Grid>
       </Grid>
     </Box>
   )
@@ -218,6 +250,28 @@ const ManageSeason = () => {
                 error={!!errors.percent}
                 label="Porcentaje a aplicar"
               />
+            )}
+          />
+        </Grid>
+        <Grid item>
+          <Controller
+            control={control}
+            name="isActive"
+            rules={{ required: true }}
+            defaultValue={currentSeason.isActive}
+            render={({ field: { ...field } }) => (
+              <TextField
+                {...field}
+                select
+                fullWidth
+                variant="standard"
+                margin="dense"
+                error={!!errors.isActive}
+                label="Estado"
+              >
+                <MenuItem value="Activa">Activa</MenuItem>
+                <MenuItem value="Desactiva">Desactiva</MenuItem>
+              </TextField>
             )}
           />
         </Grid>

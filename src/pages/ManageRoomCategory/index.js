@@ -16,10 +16,11 @@ import { addRoomRate } from '../../services/Posts/addRoomRate'
 import { LoaderSpinner } from '../../components/Loader'
 
 const columns = [
-  { id: 'id', label: 'ID', minWidth: 50 },
-  { id: 'category', label: 'Categoría', maxWidth: 400 },
-  { id: 'description', label: 'Descripción', maxWidth: 400 },
-  { id: 'cost', label: 'Costo(₡)', maxWidth: 400 },
+  { id: 'id', label: 'ID', minWidth: 10 },
+  { id: 'category', label: 'Categoría', maxWidth: 100 },
+  { id: 'description', label: 'Descripción', maxWidth: 375 },
+  { id: 'cost', label: 'Costo', maxWidth: 50 },
+  { id: 'currentCost', label: 'Costo Actual', maxWidth: 115 },
   {
     id: 'img',
     label: 'Imagen',

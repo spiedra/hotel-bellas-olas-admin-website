@@ -246,7 +246,6 @@ const ManageOffer = () => {
       onSubmit={handleSubmit(onEdit)}
       autoComplete="off"
     >
-      {console.log(currentOffer)}
       <Grid
         container
         justifyContent="flex-start"
