@@ -1,11 +1,14 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
+
 import { getSeasons } from '../../services/Gets/getSeasons'
+
 import CustomizedTable from '../../components/Table'
 import AddButton from '../../components/AddButton'
 import Modal from '../../components/Modal'
+
 import { Box, Grid, MenuItem, TextField } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
+
 import { addSeason } from '../../services/Posts/addSeason'
 import { DeleteSeason } from '../../services/Deletes/deleteSeason'
 import { LoaderSpinner } from '../../components/Loader'

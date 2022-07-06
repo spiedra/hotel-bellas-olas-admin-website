@@ -17,10 +17,10 @@ import { LoaderSpinner } from '../../components/Loader'
 
 const columns = [
   { id: 'id', label: 'ID', minWidth: 10 },
-  { id: 'category', label: 'Categoría', maxWidth: 100 },
-  { id: 'description', label: 'Descripción', maxWidth: 375 },
-  { id: 'cost', label: 'Costo', maxWidth: 50 },
-  { id: 'currentCost', label: 'Costo Actual', maxWidth: 115 },
+  { id: 'category', label: 'Categoría', maxWidth: 80 },
+  { id: 'description', label: 'Descripción', maxWidth: 365 },
+  { id: 'cost', label: 'Costo (₡)', minWidth: 94 },
+  { id: 'currentCost', label: 'Costo Actual (₡)', minWidth: 139 },
   {
     id: 'img',
     label: 'Imagen',
