@@ -137,6 +137,7 @@ const ManageOffer = () => {
             control={control}
             name="name"
             rules={{ required: true }}
+            defaultValues=""
             render={({ field: { ref, ...field } }) => (
               <TextField
                 {...field}
@@ -148,7 +149,6 @@ const ManageOffer = () => {
                 variant="standard"
                 error={!!errors.name}
                 label="Nombre de la oferta"
-                deafaultValues=""
               />
             )}
           />
@@ -157,6 +157,7 @@ const ManageOffer = () => {
           <Controller
             control={control}
             name="description"
+            defaultValues=""
             rules={{ required: true }}
             render={({ field: { ref, ...field } }) => (
               <TextField
@@ -169,7 +170,6 @@ const ManageOffer = () => {
                 variant="standard"
                 error={!!errors.description}
                 label="Descripción"
-                deafaultValues=""
               />
             )}
           />
@@ -179,13 +179,13 @@ const ManageOffer = () => {
             control={control}
             name="startDate"
             rules={{ required: true }}
+            defaultValues=""
             render={({ field: { ...field } }) => (
               <TextField
                 {...field}
                 type="date"
                 error={!!errors.startDate}
                 label="Fecha Inicial"
-                deafaultValues=""
                 fullWidth
                 variant="standard"
                 margin="dense"
@@ -199,13 +199,13 @@ const ManageOffer = () => {
             control={control}
             name="endDate"
             rules={{ required: true }}
+            defaultValues=""
             render={({ field: { ...field } }) => (
               <TextField
                 {...field}
                 type="date"
                 error={!!errors.endDate}
                 label="Fecha Final"
-                deafaultValues=""
                 fullWidth
                 variant="standard"
                 margin="dense"
@@ -219,6 +219,7 @@ const ManageOffer = () => {
             control={control}
             name="percent"
             rules={{ required: true }}
+            defaultValues=""
             render={({ field: { ref, ...field } }) => (
               <TextField
                 {...field}
@@ -230,7 +231,6 @@ const ManageOffer = () => {
                 variant="standard"
                 error={!!errors.offerPercent}
                 label="Porcentaje a aplicar"
-                deafaultValues=""
               />
             )}
           />
